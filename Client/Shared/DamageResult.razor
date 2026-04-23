@@ -52,8 +52,8 @@
     private string result_print_btn = "全て表示";
 
     [Parameter] public string? Title { get; set; }
-    [Parameter] public DamageClacChamp.Shared.Models.PokemonDataReal? atk { get; set; } = null;
-    [Parameter] public DamageClacChamp.Shared.Models.PokemonDataReal? def { get; set; } = null;
+    [Parameter] public DamageCalcChamp.Shared.Models.PokemonDataReal? atk { get; set; } = null;
+    [Parameter] public DamageCalcChamp.Shared.Models.PokemonDataReal? def { get; set; } = null;
     [Parameter] public Dictionary<string, Tuple<long, long>>? damage_min_max { get; set; } = null;
     [Parameter] public List<KeyValuePair<string, List<long>>>? damage_list { get; set; } = null;
     [Parameter] public List<KeyValuePair<string, List<long>>>? damage_list_10 { get; set; } = null;
@@ -62,7 +62,7 @@
     [Parameter] public Dictionary<string, string>? damage_exp { get; set; } = null;
     [Parameter] public Dictionary<string, Color>? HP_Bar_Color { get; set; } = null;
 
-    [Parameter] public DamageClacChamp.Shared.Models.DamageCalc? damage { get; set; } = null;
+    [Parameter] public DamageCalcChamp.Shared.Models.DamageCalc? damage { get; set; } = null;
 
     protected override void OnInitialized()
     {
@@ -74,7 +74,7 @@
     private void OpenDamageDialog( KeyValuePair<string, List<long>> d )
     {
         var move = damage.MoveManager.GetMoveInfo(d.Key);
-        var parameters = new DialogParameters<DamageClacChamp.Client.Pages.DamageDialog> { { x => x.damageDetail, d }, { y => y.moveDetail, move } };
-        DialogService.Show<DamageClacChamp.Client.Pages.DamageDialog>("ダメージ詳細", parameters );
+        var parameters = new DialogParameters<DamageCalcChamp.Client.Pages.DamageDialog> { { x => x.damageDetail, d }, { y => y.moveDetail, move } };
+        DialogService.Show<DamageCalcChamp.Client.Pages.DamageDialog>("ダメージ詳細", parameters );
     }
 }

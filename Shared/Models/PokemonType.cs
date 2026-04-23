@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DamageClacChamp.Shared.Models
+namespace DamageCalcChamp.Shared.Models
 {
     public class PokemonType
     {

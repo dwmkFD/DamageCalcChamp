@@ -649,8 +649,8 @@
         }
 
         // 実ステータスを入力して親コンポーネントに返す
-        DamageClacChamp.Shared.Models.PokemonDataReal real_pokemon
-        = new DamageClacChamp.Shared.Models.PokemonDataReal(p.Name, p.type[0], p.type[1], teratype_value, Level, status[0], status[1], status[2], status[3], status[4], status[5],
+        DamageCalcChamp.Shared.Models.PokemonDataReal real_pokemon
+        = new DamageCalcChamp.Shared.Models.PokemonDataReal(p.Name, p.type[0], p.type[1], teratype_value, Level, status[0], status[1], status[2], status[3], status[4], status[5],
                                                           p.ZukanNo, p.Height, p.Weight, ability_value, item_value, rank, options, special_value, p.MoveList);
 
         // へんげんじざいとリベロのテラスタイプ前のタイプを修正
@@ -713,7 +713,7 @@
         "正常", "毒・猛毒", "火傷", "麻痺", "眠り",
     };
 
-    private DamageClacChamp.Shared.Models.PokemonDataManager PokemonManager = new DamageClacChamp.Shared.Models.PokemonDataManager();
+    private DamageCalcChamp.Shared.Models.PokemonDataManager PokemonManager = new DamageCalcChamp.Shared.Models.PokemonDataManager();
 
     private int[] status = new int[18];
     private int[] rank = { 0, 0, 0, 0, 0 };
@@ -751,7 +751,7 @@
 
     [Parameter] public string Title { get; set; }
     [Parameter]
-    public EventCallback<DamageClacChamp.Shared.Models.PokemonDataReal> OnStatusChangeEventCallback { get; set; }
+    public EventCallback<DamageCalcChamp.Shared.Models.PokemonDataReal> OnStatusChangeEventCallback { get; set; }
 
     protected override void OnInitialized()
     {

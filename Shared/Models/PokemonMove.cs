@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 
-namespace DamageClacChamp.Shared.Models
+namespace DamageCalcChamp.Shared.Models
 {
     public class PokemonMove
     {

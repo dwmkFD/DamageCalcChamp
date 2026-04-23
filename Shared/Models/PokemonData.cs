@@ -2,7 +2,7 @@ using Microsoft.Identity.Client;
 using MudBlazor;
 using System.Reflection.Metadata;
 
-namespace DamageClacChamp.Shared.Models
+namespace DamageCalcChamp.Shared.Models
 {
     public class PokemonDataReal
     {

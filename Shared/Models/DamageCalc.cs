@@ -1,4 +1,4 @@
-﻿using DamageClacChamp.Shared.Models;
+﻿using DamageCalcChamp.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -24,7 +24,7 @@ using static System.Net.Mime.MediaTypeNames;
  *  24: わざわいのつるぎ
  */
 
-namespace DamageClacChamp.Shared.Models
+namespace DamageCalcChamp.Shared.Models
 {
     public class DamageCalc
     {
