@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.IdentityModel" Version="7.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.0.0" />
     <PackageReference Include="MudBlazor" Version="6.7.0" />
-    <PackageReference Include="PublishSPAforGitHubPages.Build" Version="3.0.3" />
+    <PackageReference Include="PublishSPAforGitHubPages.Build" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
