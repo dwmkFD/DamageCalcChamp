@@ -1,0 +1,902 @@
+
+    <main>
+            <MudGrid Spacing="@spacing" Justify="Justify.Center">
+                <MudItem lg="12" xs="12"><MudText>@Title</MudText></MudItem>
+                    <MudItem lg="6" xs="6">
+                        <MudAutocomplete T="string" Label="ポケモン" SearchFunc="@search_pokemon" CoerceText="false" Variant="Variant.Outlined" Margin="Margin.Dense" ValueChanged="OnPokemonNameSelected" />
+                    </MudItem>
+                    <MudItem lg="4" xs="4">
+                    <MudSelect T="string" Label="性格" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnNatureSelected">
+                        @foreach( var n in nature )
+                        {
+                            <MudSelectItem T="string" Value="@n" />
+                        }
+                        </MudSelect>
+                    </MudItem>
+
+                    <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Label="レベル" Variant="Variant.Outlined" Min="1" Max="100" Margin="Margin.Dense" Value="@Level" ValueChanged="OnLevelChanged" />
+                    </MudItem>
+
+                    <MudItem lg="2" xs="2">
+                        <MudText>実数値</MudText>
+                    </MudItem>
+                    <MudItem lg="10" xs="10">
+                    <MudItem lg="12" xs="12">
+                        <MudGrid Spacing="0">
+                            <MudItem lg="2" xs="2">
+                                <MudNumericField @bind-Value="status[0]" Label="ＨＰ" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                            </MudItem>
+                            <MudItem sm="2" xs="2">
+                                <MudNumericField @bind-Value="status[1]" Label="攻撃" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                            </MudItem>
+                            <MudItem lg="2" xs="2">
+                                <MudNumericField @bind-Value="status[2]" Label="防御" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                            </MudItem>
+                            <MudItem lg="2" xs="2">
+                                <MudNumericField @bind-Value="status[3]" Label="特攻" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                            </MudItem>
+                            <MudItem lg="2" xs="2">
+                                <MudNumericField @bind-Value="status[4]" Label="特防" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                            </MudItem>
+                            <MudItem lg="2" xs="2">
+                                <MudNumericField @bind-Value="status[5]" Label="素早" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudItem>
+                </MudItem>
+
+                <MudItem lg="2" xs="2">
+                    <MudText>個体値</MudText>
+                </MudItem>
+                <MudItem lg="10" xs="10">
+                    <MudItem lg="12" xs="12">
+                        <MudGrid Spacing="0">
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[6]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(6, s))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[7]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(7, s))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[8]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(8, s))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[9]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(9, s))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[10]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(10, s))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[11]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(11, s))" />
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+                </MudItem>
+
+
+        <MudItem lg="2" xs="2">
+                    <MudText>努力値</MudText>
+                </MudItem>
+                <MudItem lg="10" xs="10">
+                    <MudItem lg="12" xs="12">
+                        <MudGrid Spacing="0">
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[12]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(12, s))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[13]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(13, s))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[14]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(14, s))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[15]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(15, s))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[16]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(16, s))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@status[17]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(17, s))" />
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+                </MudItem>
+                <MudItem lg="2" xs="2">
+                    @if ( total_efv > 510 )
+                    {
+                        <MudText Color="Color.Error"><b>@total_efv</b> / 510</MudText>
+                    }
+                    else
+                    {
+                        <MudText>@total_efv / 510</MudText>
+                    }
+                </MudItem>
+                <MudItem lg="10" xs="10">
+                    <MudItem lg="12" xs="12">
+                        <MudGrid Spacing="0">
+                        <MudItem lg="2" xs="2">
+                            <MudButton OnClick="@(s => _efvalToggleText(0))" Variant="Variant.Filled" FullWidth="true">@_efvalToggleValue[0]</MudButton>
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                                <MudButton OnClick="@(s => _efvalToggleText(1))" Variant="Variant.Filled" FullWidth="true">@_efvalToggleValue[1]</MudButton>
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                                <MudButton OnClick="@(s => _efvalToggleText(2))" Variant="Variant.Filled" FullWidth="true">@_efvalToggleValue[2]</MudButton>
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                                <MudButton OnClick="@(s => _efvalToggleText(3))" Variant="Variant.Filled" FullWidth="true">@_efvalToggleValue[3]</MudButton>
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                                <MudButton OnClick="@(s => _efvalToggleText(4))" Variant="Variant.Filled" FullWidth="true">@_efvalToggleValue[4]</MudButton>
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                                <MudButton OnClick="@(s => _efvalToggleText(5))" Variant="Variant.Filled" FullWidth="true">@_efvalToggleValue[5]</MudButton>
+                        </MudItem>
+                        </MudGrid>
+                    </MudItem>
+                </MudItem>
+
+                <MudItem lg="2" xs="2">
+                    <MudText>ランク</MudText>
+                </MudItem>
+                <MudItem lg="10" xs="10">
+                    <MudItem lg="12" xs="12">
+                        <MudGrid Spacing="0">
+                        <MudItem lg="2" xs="2" />
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@rank[0]" Variant="Variant.Outlined" Min="-6" Max="6" Margin="Margin.Dense" ValueChanged="@(s => OnRankChanged( 0, s ))" />
+                        </MudItem>
+                        <MudItem sm="2" xs="2">
+                        <MudNumericField T="int" Value="@rank[1]" Variant="Variant.Outlined" Min="-6" Max="6" Margin="Margin.Dense" ValueChanged="@(s => OnRankChanged( 1, s ))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@rank[2]" Variant="Variant.Outlined" Min="-6" Max="6" Margin="Margin.Dense" ValueChanged="@(s => OnRankChanged( 2, s ))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@rank[3]" Variant="Variant.Outlined" Min="-6" Max="6" Margin="Margin.Dense" ValueChanged="@(s => OnRankChanged( 3, s ))" />
+                        </MudItem>
+                        <MudItem lg="2" xs="2">
+                        <MudNumericField T="int" Value="@rank[4]" Variant="Variant.Outlined" Min="-6" Max="6" Margin="Margin.Dense" ValueChanged="@(s => OnRankChanged( 4, s ))" />
+                            </MudItem>
+                        </MudGrid>
+                </MudItem>
+                </MudItem>
+
+                <MudItem lg="4" xs="4">
+                    <MudSelect T="string" Label="特性" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnAbilitySelected">
+                        <MudSelectItem Value="@("未発動")" />
+                        @foreach( var a in PokemonAbility )
+                        {
+                            <MudSelectItem T="string" Value="@a" />
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem lg="5" xs="5">
+            <MudSelect T="string" Label="道具" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnItemSelected">
+                @foreach( var i in PokemonItem )
+                {
+                    <MudSelectItem T="string" Value="@i" />
+                }
+                    </MudSelect>
+                </MudItem>
+                <MudItem lg="3" xs="3">
+            <MudSelect T="string" Label="テラスタイプ" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnTeraTypeSelected">
+                @foreach( var t in teratype )
+                {
+                    <MudSelectItem T="string" Value="@t" />
+                }
+                    </MudSelect>
+                </MudItem>
+
+            <MudItem lg="4" xs="4">
+                @if (ability_value == "マルチスケイル" || ability_value == "ファントムガード")
+                {
+                    <MudForm>
+                        <MudCheckBox T="bool" Checked="@options[12]" Size="Size.Small" Label="HPが満タンの時ダメージ半減" Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged(12,x))"/>
+                    </MudForm>
+                }
+                else if ( ability_value == "テラスシェル" )
+                {
+                    <MudForm>
+                        <MudCheckBox T="bool" Checked="@options[12]" Size="Size.Small" Label="HPが満タンの時全タイプいまひとつ" Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged(12,x))" />
+                    </MudForm>
+                }
+                else if ( ability_value == "しんりょく" || ability_value == "もうか" || ability_value == "げきりゅう" || ability_value == "むしのしらせ" || ability_value == "もらいび" )
+                {
+                    <MudForm>
+                        <MudCheckBox T="bool" Checked="@options[12]" Size="Size.Small" Label="対象タイプの威力1.5倍" Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged(12,x))" />
+                    </MudForm>
+                }
+            </MudItem>
+            <MudItem lg="5" xs="5">
+                @if (item_value == "しんかのきせき")
+                {
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[13]" Size="Size.Small" Label="進化前ポケモンの時 防御/特防1.5倍" Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged(13,x))" />
+                    </MudForm>
+                }
+            </MudItem>
+            <MudItem lg="3" xs="3">
+                @if (teratype_value != "")
+                {
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[14]" Size="Size.Small" Label="テラスタル" Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged(14,x))" />
+                    </MudForm>
+                }
+            </MudItem>
+
+
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[0]" Size="Size.Small" Label="リフレクター" CheckedChanged="@(x => OnOptionsChanged(0,x))" />
+                    </MudForm>
+                </MudItem>
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[1]" Size="Size.Small" Label="ひかりのかべ" CheckedChanged="@(x => OnOptionsChanged(1,x))" />
+                    </MudForm>
+                </MudItem>
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[2]" Size="Size.Small" Label="てだすけ" CheckedChanged="@(x => OnOptionsChanged(2,x))" />
+                    </MudForm>
+                </MudItem>
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[3]" Size="Size.Small" Label="きあいだめ" CheckedChanged="@(x => OnOptionsChanged(3,x))" />
+                    </MudForm>
+                </MudItem>
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[4]" Size="Size.Small" Label="じゅうでん" CheckedChanged="@(x => OnOptionsChanged(4,x))" />
+                    </MudForm>
+                </MudItem>
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[5]" Size="Size.Small" Label="そうでん" CheckedChanged="@(x => OnOptionsChanged(5,x))" />
+                    </MudForm>
+                </MudItem>
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[6]" Size="Size.Small" Label="はがねのせいしん" CheckedChanged="@(x => OnOptionsChanged(6,x))" />
+                    </MudForm>
+                </MudItem>
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[7]" Size="Size.Small" Label="フラワーギフト" CheckedChanged="@(x => OnOptionsChanged(7,x))" />
+                    </MudForm>
+                </MudItem>
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[8]" Size="Size.Small" Label="ハロウィン" CheckedChanged="@(x => OnOptionsChanged(8,x))" />
+                    </MudForm>
+                </MudItem>
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[9]" Size="Size.Small" Label="もりののろい" CheckedChanged="@(x => OnOptionsChanged(9,x))" />
+                    </MudForm>
+                </MudItem>
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[10]" Size="Size.Small" Label="みずびたし" CheckedChanged="@(x => OnOptionsChanged(10,x))" />
+                    </MudForm>
+                </MudItem>
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                        <MudCheckBox  T="bool" Checked="@options[11]" Size="Size.Small" Label="フレンドガード" CheckedChanged="@(x => OnOptionsChanged(11,x))" />
+                    </MudForm>
+                </MudItem>
+
+                <MudItem lg="4" xs="4">
+                    <MudForm>
+                    <MudCheckBox  T="bool" Checked="@options[19]" Size="Size.Small" Label="ちいさくなる" CheckedChanged="@(x => OnOptionsChanged(19,x))" />
+                    </MudForm>
+                </MudItem>
+        <MudItem lg="4" xs="4">
+            <MudForm>
+                <MudCheckBox T="bool" Checked="@options[21]" Size="Size.Small" Label="わざわいのうつわ" CheckedChanged="@(x => OnOptionsChanged(21,x))" />
+            </MudForm>
+        </MudItem>
+        <MudItem lg="4" xs="4">
+            <MudForm>
+                <MudCheckBox  T="bool" Checked="@options[22]" Size="Size.Small" Label="わざわいのおふだ" CheckedChanged="@(x => OnOptionsChanged(22,x))" />
+            </MudForm>
+        </MudItem>
+
+        <MudItem lg="4" xs="4">
+            <MudForm>
+                <MudCheckBox T="bool" Checked="@options[23]" Size="Size.Small" Label="わざわいのたま" CheckedChanged="@(x => OnOptionsChanged(23,x))" />
+            </MudForm>
+        </MudItem>
+        <MudItem lg="4" xs="4">
+            <MudForm>
+                <MudCheckBox T="bool" Checked="@options[24]" Size="Size.Small" Label="わざわいのつるぎ" CheckedChanged="@(x => OnOptionsChanged(24,x))" />
+            </MudForm>
+        </MudItem>
+        <MudItem lg="4" xs="4">
+            <MudSelect T="string" Label="状態異常" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnConditionChanged">
+                @foreach( var c in conditionAbnormaly )
+                {
+                    <MudSelectItem T="string" Value="@c" />
+                }
+            </MudSelect>
+        </MudItem>
+
+        @if (special_string != "")
+        {
+            <MudItem lg="4" xs="4">
+                <MudSelect T="int" Label="@special_string" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnSpecialValueChanged">
+                    @foreach (var v in special_values)
+                    {
+                        <MudSelectItem T="int" Value="@v" />
+                    }
+                </MudSelect>
+            </MudItem> 
+        }
+
+        @if (typechange_ability_title != "" && options[14] == true )
+        {
+            <MudItem lg="4" xs="4">
+                <MudSelect T="string" Label="@typechange_ability_title" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnTypeChangeAbilitySelected">
+                    @foreach (var v in typechange_ability_type)
+                    {
+                        <MudSelectItem T="string" Value="@v" />
+                    }
+                </MudSelect>
+            </MudItem>
+        }
+
+    </MudGrid>
+    </main>
+
+@code {
+    public int spacing { get; set; } = 1;
+
+    private string PokemonName;
+    private List<string> PokemonNameList = new List<string>();
+    private Dictionary<string, string> TranslateList = new Dictionary<string, string>();
+
+    private List<string> trans_katakana( string in_str )
+    {
+        List<string> result = new List<string>();
+        bool finish = true;
+        string str = in_str.ToLower();
+
+        // まず1～3文字のアルファベットの組を先頭から順番にカタカナに変換する
+        string res = "";
+        for (int i = 0; i < str.Length; i++)
+        {
+            string tmp = "";
+            if ( str.Length - i >= 3 )
+            {
+                // 3文字のパターンから先に調べた方が良さそう
+                if (TranslateList.ContainsKey(str.Substring(i, 3)))
+                {
+                    tmp = TranslateList[str.Substring(i, 3)];
+                    res += tmp;
+                    i += 2;
+                    continue;
+                }
+            }
+            if ( str.Length - i >= 2 )
+            {
+                if (TranslateList.ContainsKey(str.Substring(i, 2)))
+                {
+                    tmp = TranslateList[str.Substring(i, 2)];
+                    res += tmp;
+                    ++i; // 2文字変換してるので次へ
+                    continue;
+                }
+                else
+                {
+                    if (i < str.Length)
+                    {
+                        if (str[i] == str[i + 1])
+                        {
+                            if (str[i] != 'a' && str[i] != 'i' && str[i] != 'u' && str[i] != 'e' && str[i] != 'o')
+                            {
+                                // 母音が2つ続いた場合は"ッ"への変換はしない
+                                res += "ッ";
+                                continue; // 子音を一つ残すので i をインクリメントせずに次へ
+                            }
+                        }
+                        else if ( str[i] == 'n' )
+                        {
+                            if (str[i] != 'a' && str[i] != 'i' && str[i] != 'u' && str[i] != 'e' && str[i] != 'o')
+                            {
+                                // nの次が母音じゃなかった場合、nを"ン"に変換する
+                                res += "ン";
+                                continue; // 次の子音は残すので i をインクリメントせずに次へ
+                            }
+                        }
+                    }
+                }
+            }
+            if ( str.Length - i >= 1 )
+            {
+                if (TranslateList.ContainsKey(str.Substring(i, 1)))
+                {
+                    // 1文字(母音とンとー)の変換ができるか？
+                    // -> ンをnだけから変換するには次が子音かどうかの判定が必要で面倒なので後回し
+                    tmp = TranslateList[str.Substring(i, 1)];
+                    res += tmp;
+                    continue;
+                }
+                else
+                {
+                    if ( str[i] >= 'a' && str[i] <= 'z' )
+                    {
+                        finish = false;
+                        break; // 1文字しかなく、さらに変換にも失敗してるなら、そのまま最終フェーズへ進む
+                    }
+                    else
+                    {
+                        // アルファベットじゃない場合はそのままresにくっつける
+                        // -> フシギb みたいな入力から フシギバ/フシギビ/...を検索したい
+                        res += str[i];
+                    }
+                }
+            }
+        }
+
+        // 変換から漏れた最後の1文字からあり得る文字の候補を生成する
+        if ( finish == false && char.IsLetter( str.Last() ) )
+        {
+            // 最後の1文字がアルファベット(つまり変換漏れがある)
+            var tmpL = TranslateList.Where(x => x.Key.StartsWith(str.Last())).ToList();
+            foreach( var v in tmpL )
+            {
+                // 変換候補分だけ、それまでの変換結果に付け加えてリストを作る
+                // 例：マリルr -> マリルラ, マリルリ, マリルル, マリルレ, マリルロ
+                result.Add(res + v.Value);
+            }
+        }
+        else
+        {
+            result.Add( res ); // 全部変換できた(もしくは空っぽ)なら、それだけリストに詰めて返す
+        }
+
+        return (result);
+    }
+
+    private async Task<IEnumerable<string>> search_pokemon( string str )
+    {
+        if (string.IsNullOrEmpty(str))
+            return (PokemonNameList);
+
+        var s = trans_katakana(str);
+        s = s.Distinct().ToList();
+        List<string> ls = new List<string>();
+        foreach ( var ss in s )
+        {
+            ls.AddRange( PokemonNameList.Where(x => x.StartsWith(ss)).ToList() );
+        }
+        ls = ls.Distinct().ToList();
+
+        return ( ls );
+    }
+    private void OnPokemonNameSelected( string name ) // ポケモン名が入力された
+    {
+        PokemonName = name;
+        CalcStatus();
+    }
+    private void OnNatureSelected( string v )
+    {
+        nature_value = v;
+        CalcStatus();
+    }
+    private void OnLevelChanged( int l )
+    {
+        Level = l;
+        CalcStatus();
+    }
+    private void OnStatusChanged( int idx, int v )
+    {
+        status[idx] = v;
+        CalcStatus();
+    }
+    private void OnRankChanged( int idx, int v )
+    {
+        rank[idx] = v;
+        CalcStatus();
+    }
+    private void OnAbilitySelected( string s )
+    {
+        ability_value = s;
+        CalcStatus();
+    }
+    private void OnItemSelected( string s )
+    {
+        item_value = s;
+        CalcStatus();
+    }
+    private void OnTeraTypeSelected( string s )
+    {
+        teratype_value = s;
+        if ( options[14] )
+            CalcStatus(); // テラスタルしてる時だけダメージ再計算
+    }
+    private void OnConditionChanged( string s )
+    {
+        options[15] = options[16] = options[17] = options[18] = false;
+        switch ( s )
+        {
+            default: break;
+            case "毒・猛毒": options[15] = true; break;
+            case "火傷": options[16] = true; break;
+            case "麻痺": options[17] = true; break;
+            case "眠り": options[18] = true; break;
+        }
+
+        CalcStatus();
+    }
+    private void OnOptionsChanged( int idx, bool val )
+    {
+        options[idx] = val;
+        CalcStatus();
+    }
+    private void OnSpecialValueChanged( int val )
+    {
+        special_value = val;
+        CalcStatus();
+    }
+    private void OnTypeChangeAbilitySelected( string s )
+    {
+        typechange_ability_string = s;
+        CalcStatus();
+    }
+
+    private void CalcStatus()
+    {
+        // レベル、種族値、個体値、努力値から実数値を計算する
+        var p = PokemonManager.GetPokemonData(PokemonName);
+        if (p == null) // そんな名前のポケモンは存在しない！
+            return;
+
+        // 努力値の合計を算出する
+        total_efv = 0;
+        for (int i = 12; i < 18; ++i)
+        {
+            total_efv += status[i];
+        }
+
+        if ( PokemonName.Contains( "オーガポン" ) )
+        {
+            // オーガポンで、みどりのめん以外の場合は持ち物を(内部的に)固定する
+            // -> 同じような処理を、ギラティナとかオリジンシンオウ伝説とかでもやらないとダメ
+            //  -> あと、アルセウスのプレート、シルヴァディのメモリとかも？ -> これも技と自身のタイプなのでダメージ計算本体でやれば良いと思う
+            //  -> ゲノセクトのカセットも同じ
+            if (PokemonName.Contains("いど"))
+            {
+                item_value = "いどのめん";
+            }
+            else if (PokemonName.Contains("かまど"))
+            {
+                item_value = "かまどのめん";
+            }
+            else if (PokemonName.Contains("いしずえ"))
+            {
+                item_value = "いしずえのめん";
+            }
+        }
+
+        // 特性を設定する
+        PokemonAbility.Clear();
+        foreach( var a in p.ability )
+        {
+            if ( string.IsNullOrEmpty( a ) == false )
+                PokemonAbility.Add( a );
+        }
+
+        // 種族値を入力
+        status[0] = p.HP;
+        status[1] = p.Attack;
+        status[2] = p.Block;
+        status[3] = p.Contact;
+        status[4] = p.Defense;
+        status[5] = p.Speed;
+
+        // HPを計算する
+        status[0] = ( status[0] * 2 + status[6] + status[12] / 4 ) * Level / 100 + Level + 10;
+        // それ以外のステータスを計算する
+        for ( int i = 1; i < 6; ++i )
+        {
+            status[i] = ( status[i] * 2 + status[6 + i] + status[12 + i] / 4 ) * Level / 100 + 5;
+        }
+
+        // 性格補正する
+        int idx = Array.IndexOf(nature, nature_value);
+        if ( idx > 0 )
+        {
+            --idx;
+            int up_status = idx / 4;
+            int down_status = idx % 4;
+            if (down_status >= up_status)
+                down_status += 1;
+            status[1 + up_status] = (int)( status[1 + up_status] * 1.1 );
+            status[1 + down_status] = (int)(status[1 + down_status] * 0.9);
+        }
+
+        // 計算が特殊な特性や技のためのウィンドウを表示させる
+        if ( p.MoveList.Contains( "ふんどのこぶし" ) )
+        {
+            // ふんどのこぶしを覚えるポケモン？
+            special_string = "ふんどのこぶし";
+        }
+        else if (p.MoveList.Contains("おはかまいり"))
+        {
+            // おはかまいりを覚えるポケモン？
+            special_string = "おはかまいり";
+        }
+        else
+        {
+            // 特に無いならウィンドウを消す
+            special_string = "";
+        }
+
+        if (ability_value == "そうだいしょう" || ability_value == "はがねのせいしん")
+        {
+            special_string = ability_value;
+        }
+        else if (ability_value == "へんげんじざい" || ability_value == "リベロ")
+        {
+            typechange_ability_title = ability_value;
+        }
+        else
+        {
+            typechange_ability_title = "";
+        }
+
+        // 実ステータスを入力して親コンポーネントに返す
+        DamageClacChamp.Shared.Models.PokemonDataReal real_pokemon
+        = new DamageClacChamp.Shared.Models.PokemonDataReal(p.Name, p.type[0], p.type[1], teratype_value, Level, status[0], status[1], status[2], status[3], status[4], status[5],
+                                                          p.ZukanNo, p.Height, p.Weight, ability_value, item_value, rank, options, special_value, p.MoveList);
+
+        // へんげんじざいとリベロのテラスタイプ前のタイプを修正
+        if ( typechange_ability_string != "" )
+        {
+            if ( typechange_ability_string != "元タイプ" )
+            {
+                real_pokemon.type[0] = typechange_ability_string;
+                real_pokemon.type[1] = ""; // 第二タイプは消す
+            }
+        }
+
+        OnStatusChangeEventCallback.InvokeAsync( real_pokemon );
+    }
+
+    private int Level = 50;
+
+    private List<string> PokemonAbility = new List<string>();
+    private string ability_value = "未発動";
+
+    private string item_value = "未発動";
+
+    private string teratype_value = "";
+
+    private string[] nature = {
+        "がんばりや",
+        "さみしがり A+B-", "いじっぱり A+C-", "やんちゃ A+D-", "ゆうかん A+S-",
+        "ずぶとい B+A-", "わんぱく B+C-", "のうてんき B+D-", "のんき B+S-",
+        "ひかえめ C+A-", "おっとり C+B-", "うっかりや C+D-", "れいせい C+S-",
+        "おだやか D+A-", "おとなしい D+B-", "しんちょう D+C-", "なまいき D+S-",
+        "おくびょう S+A-", "せっかち S+B-", "ようき S+C-", "むじゃき S+D-",
+    };
+    private string nature_value = "がんばりや";
+
+    private string[] PokemonItem = {
+        "もちものなし", "ブーストエナジー",
+        "(攻撃系)",
+        "タイプ強化", "ノーマルジュエル", "いのちのたま", "こころのしずく", "こだわりハチマキ",
+        "こだわりメガネ", "こんごうだま", "しらたま", "しんかいのキバ", "するどいツメ", "たつじんのおび",
+        "ちからのハチマキ", "でんきだま", "ながねぎ", "はっきんだま", "ピントレンズ",
+        "ふといホネ", "メトロノーム(1回目)", "メトロノーム(2回目)", "メトロノーム(3回目)",
+        "メトロノーム(4回目)", "メトロノーム(5回目)", "メトロノーム(6回目以降)","ものしりメガネ",
+        "ラッキーパンチ", "パンチグローブ", "でんきだま",
+        "(防御系)",
+        "半減木の実", "くろいてっきゅう", "しんかいのウロコ",
+        "しんかのきせき", "とつげきチョッキ", "メタルパウダー",
+        "(その他)",
+        "こだわりスカーフ",
+    };
+
+    private string[] teratype = {
+        "ノーマル", "ほのお", "みず", "でんき", "くさ",
+        "こおり", "かくとう", "どく", "じめん", "ひこう",
+        "エスパー", "むし", "いわ", "ゴースト",
+        "ドラゴン", "あく", "はがね", "フェアリー",
+        "ステラ",
+    };
+
+    private string[] conditionAbnormaly = {
+        "正常", "毒・猛毒", "火傷", "麻痺", "眠り",
+    };
+
+    private DamageClacChamp.Shared.Models.PokemonDataManager PokemonManager = new DamageClacChamp.Shared.Models.PokemonDataManager();
+
+    private int[] status = new int[18];
+    private int[] rank = { 0, 0, 0, 0, 0 };
+
+    private int total_efv = 0;
+
+    private int[] special_values = {
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+    };
+    private string special_string = "";
+    private int special_value = 0;
+
+    private string typechange_ability_title = "";
+    private string typechange_ability_string = "";
+    private List<string> typechange_ability_type = new List<string>();
+
+    private int[] _efvalToggleValue = new int[6];
+    void _efvalToggleText( int idx )
+    {
+        if (_efvalToggleValue[idx] == 252)
+        {
+            _efvalToggleValue[idx] = 0;
+            status[12 + idx] = 252;
+        }
+        else
+        {
+            _efvalToggleValue[idx] = 252;
+            status[12 + idx] = 0;
+        }
+
+        CalcStatus();
+    }
+
+    private bool[] options = new bool[30];
+
+    [Parameter] public string Title { get; set; }
+    [Parameter]
+    public EventCallback<DamageClacChamp.Shared.Models.PokemonDataReal> OnStatusChangeEventCallback { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        // 一気に登録するとエラーが起きるので、世代ごとに分割
+        PokemonManager.InitializePokemonData1();
+        PokemonManager.InitializePokemonData2();
+        PokemonManager.InitializePokemonData3();
+        PokemonManager.InitializePokemonData4();
+        PokemonManager.InitializePokemonData5();
+        PokemonManager.InitializePokemonData6();
+        PokemonManager.InitializePokemonData7();
+        PokemonManager.InitializePokemonData8();
+        PokemonManager.InitializePokemonData9();
+        PokemonNameList = PokemonManager.AllPokemonName();
+
+        typechange_ability_type.Add("元タイプ");
+        foreach( var t in teratype )
+        {
+            typechange_ability_type.Add(t);
+        }
+
+        status[6] = status[7] = status[8] = status[9] = status[10] = status[11] = 31;
+        _efvalToggleValue[0] = _efvalToggleValue[1] = _efvalToggleValue[2] = _efvalToggleValue[3] = _efvalToggleValue[4] = _efvalToggleValue[5] = 252;
+
+        // ローマ字→カタカナ変換辞書
+        TranslateList["a"] = "ア"; TranslateList["ba"] = "バ";
+        TranslateList["be"] = "ベ"; TranslateList["bi"] = "ビ";
+        TranslateList["bo"] = "ボ"; TranslateList["bu"] = "ブ";
+        TranslateList["bya"] = "ビャ"; TranslateList["bye"] = "ビェ";
+        TranslateList["byi"] = "ビィ"; TranslateList["byo"] = "ビョ";
+        TranslateList["byu"] = "ビュ"; TranslateList["ca"] = "カ";
+        TranslateList["ce"] = "セ"; TranslateList["cha"] = "チャ";
+        TranslateList["che"] = "チェ"; TranslateList["chi"] = "チ";
+        TranslateList["cho"] = "チョ"; TranslateList["chu"] = "チュ";
+        TranslateList["ci"] = "シ"; TranslateList["co"] = "コ";
+        TranslateList["cu"] = "ク"; TranslateList["cya"] = "チャ";
+        TranslateList["cye"] = "チェ"; TranslateList["cyi"] = "チィ";
+        TranslateList["cyo"] = "チョ"; TranslateList["cyu"] = "チュ";
+        TranslateList["da"] = "ダ"; TranslateList["de"] = "デ";
+        TranslateList["dha"] = "デャ"; TranslateList["dhe"] = "デェ";
+        TranslateList["dhi"] = "ディ"; TranslateList["dho"] = "デョ";
+        TranslateList["dhu"] = "デュ"; TranslateList["di"] = "ヂ";
+        TranslateList["do"] = "ド"; TranslateList["du"] = "ヅ";
+        TranslateList["dya"] = "ヂャ"; TranslateList["dye"] = "ヂェ";
+        TranslateList["dyi"] = "ヂィ"; TranslateList["dyo"] = "ヂョ";
+        TranslateList["dyu"] = "デュ"; TranslateList["e"] = "エ";
+        TranslateList["fa"] = "ファ"; TranslateList["fe"] = "フェ";
+        TranslateList["fi"] = "フィ"; TranslateList["fo"] = "フォ";
+        TranslateList["fu"] = "フ"; TranslateList["ga"] = "ガ";
+        TranslateList["ge"] = "ゲ"; TranslateList["gi"] = "ギ";
+        TranslateList["go"] = "ゴ"; TranslateList["gu"] = "グ";
+        TranslateList["gwa"] = "グァ"; TranslateList["gwe"] = "グェ";
+        TranslateList["gwi"] = "グィ"; TranslateList["gwo"] = "グォ";
+        TranslateList["gwu"] = "グ"; TranslateList["gya"] = "ギャ";
+        TranslateList["gye"] = "ギェ"; TranslateList["gyi"] = "ギィ";
+        TranslateList["gyo"] = "ギョ"; TranslateList["gyu"] = "ギュ";
+        TranslateList["ha"] = "ハ"; TranslateList["he"] = "ヘ";
+        TranslateList["hi"] = "ヒ"; TranslateList["ho"] = "ホ";
+        TranslateList["hu"] = "フ"; TranslateList["hya"] = "ヒャ";
+        TranslateList["hye"] = "ヒェ"; TranslateList["hyi"] = "ヒィ";
+        TranslateList["hyo"] = "ヒョ"; TranslateList["hyu"] = "ヒュ";
+        TranslateList["i"] = "イ"; TranslateList["ja"] = "ジャ";
+        TranslateList["je"] = "ジェ"; TranslateList["ji"] = "ジ";
+        TranslateList["jo"] = "ジョ"; TranslateList["ju"] = "ジュ";
+        TranslateList["jya"] = "ジャ"; TranslateList["jye"] = "ジェ";
+        TranslateList["jyi"] = "ジィ"; TranslateList["jyo"] = "ジョ";
+        TranslateList["jyu"] = "ジュ"; TranslateList["ka"] = "カ";
+        TranslateList["ke"] = "ケ"; TranslateList["ki"] = "キ";
+        TranslateList["ko"] = "コ"; TranslateList["ku"] = "ク";
+        TranslateList["kwa"] = "クヮ"; TranslateList["kwe"] = "クェ";
+        TranslateList["kwi"] = "クィ"; TranslateList["kwo"] = "クォ";
+        TranslateList["kwu"] = "ク"; TranslateList["kya"] = "キャ";
+        TranslateList["kye"] = "キェ"; TranslateList["kyi"] = "キィ";
+        TranslateList["kyo"] = "キョ"; TranslateList["kyu"] = "キュ";
+        TranslateList["la"] = "ァ"; TranslateList["le"] = "ェ";
+        TranslateList["li"] = "ィ"; TranslateList["lo"] = "ォ";
+        TranslateList["lu"] = "ゥ"; TranslateList["lwa"] = "ヮ";
+        TranslateList["lya"] = "ャ"; TranslateList["lye"] = "ェ";
+        TranslateList["lyi"] = "ィ"; TranslateList["lyo"] = "ョ";
+        TranslateList["lyu"] = "ュ"; TranslateList["ma"] = "マ";
+        TranslateList["me"] = "メ"; TranslateList["mi"] = "ミ";
+        TranslateList["mo"] = "モ"; TranslateList["mu"] = "ム";
+        TranslateList["mya"] = "ミャ"; TranslateList["mye"] = "ミェ";
+        TranslateList["myi"] = "ミィ"; TranslateList["myo"] = "ミョ";
+        TranslateList["myu"] = "ミュ"; TranslateList["na"] = "ナ";
+        TranslateList["ne"] = "ネ"; TranslateList["ni"] = "ニ";
+        TranslateList["nn"] = "ン"; TranslateList["no"] = "ノ";
+        TranslateList["nu"] = "ヌ"; TranslateList["nya"] = "ニャ";
+        TranslateList["nye"] = "ニェ"; TranslateList["nyi"] = "ニィ";
+        TranslateList["nyo"] = "ニョ"; TranslateList["nyu"] = "ニュ";
+        TranslateList["o"] = "オ"; TranslateList["pa"] = "パ";
+        TranslateList["pe"] = "ペ"; TranslateList["pi"] = "ピ";
+        TranslateList["po"] = "ポ"; TranslateList["pu"] = "プ";
+        TranslateList["pya"] = "ピャ"; TranslateList["pye"] = "ピェ";
+        TranslateList["pyi"] = "ピィ"; TranslateList["pyo"] = "ピョ";
+        TranslateList["pyu"] = "ピュ"; TranslateList["qa"] = "クァ";
+        TranslateList["qe"] = "クェ"; TranslateList["qi"] = "クィ";
+        TranslateList["qo"] = "クォ"; TranslateList["qu"] = "ク";
+        TranslateList["qya"] = "クャ"; TranslateList["qye"] = "クェ";
+        TranslateList["qyi"] = "クィ"; TranslateList["qyo"] = "クョ";
+        TranslateList["qyu"] = "クュ"; TranslateList["ra"] = "ラ";
+        TranslateList["re"] = "レ"; TranslateList["ri"] = "リ";
+        TranslateList["ro"] = "ロ"; TranslateList["ru"] = "ル";
+        TranslateList["rya"] = "リャ"; TranslateList["rye"] = "リェ";
+        TranslateList["ryi"] = "リィ"; TranslateList["ryo"] = "リョ";
+        TranslateList["ryu"] = "リュ"; TranslateList["sa"] = "サ";
+        TranslateList["se"] = "セ"; TranslateList["sha"] = "シャ";
+        TranslateList["she"] = "シェ"; TranslateList["shi"] = "シ";
+        TranslateList["sho"] = "ショ"; TranslateList["shu"] = "シュ";
+        TranslateList["si"] = "シ"; TranslateList["so"] = "ソ";
+        TranslateList["su"] = "ス"; TranslateList["sya"] = "シャ";
+        TranslateList["sye"] = "シェ"; TranslateList["syi"] = "シィ";
+        TranslateList["syo"] = "ショ"; TranslateList["syu"] = "シュ";
+        TranslateList["ta"] = "タ"; TranslateList["te"] = "テ";
+        TranslateList["tha"] = "テャ"; TranslateList["the"] = "テェ";
+        TranslateList["thi"] = "ティ"; TranslateList["tho"] = "テョ";
+        TranslateList["thu"] = "テュ"; TranslateList["ti"] = "チ";
+        TranslateList["to"] = "ト"; TranslateList["tsa"] = "ツァ";
+        TranslateList["tse"] = "ツェ"; TranslateList["tsi"] = "ツィ";
+        TranslateList["tsu"] = "ツ"; TranslateList["tu"] = "ツ";
+        TranslateList["tso"] = "ツォ"; TranslateList["tya"] = "チャ";
+        TranslateList["tye"] = "チェ"; TranslateList["tyi"] = "チィ";
+        TranslateList["tyo"] = "チョ"; TranslateList["tyu"] = "チュ";
+        TranslateList["u"] = "ウ"; TranslateList["va"] = "ヴァ";
+        TranslateList["ve"] = "ヴェ"; TranslateList["vi"] = "ヴィ";
+        TranslateList["vo"] = "ヴォ"; TranslateList["vu"] = "ヴ";
+        TranslateList["wa"] = "ワ"; TranslateList["we"] = "ウェ";
+        TranslateList["wi"] = "ウィ"; TranslateList["wo"] = "ヲ";
+        TranslateList["wu"] = "ウ"; TranslateList["xa"] = "ァ";
+        TranslateList["xe"] = "ェ"; TranslateList["xi"] = "ィ";
+        TranslateList["xo"] = "ォ"; TranslateList["xn"] = "ン";
+        TranslateList["xtu"] = "ッ"; TranslateList["xtsu"] = "ッ";
+        TranslateList["xu"] = "ゥ"; TranslateList["xwa"] = "ヮ";
+        TranslateList["xya"] = "ャ"; TranslateList["xye"] = "ェ";
+        TranslateList["xyi"] = "ィ"; TranslateList["xyo"] = "ョ";
+        TranslateList["xyu"] = "ュ"; TranslateList["ya"] = "ヤ";
+        TranslateList["ye"] = "イェ"; TranslateList["yi"] = "イ";
+        TranslateList["yo"] = "ヨ"; TranslateList["yu"] = "ユ";
+        TranslateList["za"] = "ザ"; TranslateList["ze"] = "ゼ";
+        TranslateList["zi"] = "ジ"; TranslateList["zo"] = "ゾ";
+        TranslateList["zu"] = "ズ"; TranslateList["zya"] = "ジャ";
+        TranslateList["zye"] = "ジェ"; TranslateList["zyi"] = "ジィ";
+        TranslateList["zyo"] = "ジョ"; TranslateList["zyu"] = "ジュ";
+        TranslateList["-"] = "ー";
+    }
+}

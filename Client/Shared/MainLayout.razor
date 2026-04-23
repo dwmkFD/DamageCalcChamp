@@ -1,0 +1,249 @@
+﻿@inherits LayoutComponentBase
+@inject ILogger<MainLayout> Logger_
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<div class="page">
+<!--
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+-->
+    <main>
+        <!--
+            <div class="top-row px-4">
+                <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            </div>
+
+            <article class="content px-4">
+            </article>
+    -->
+        <div class="top-row px-4">
+            <p>ポケットモンスター チャンピオンズ ダメージ計算機</p>
+        </div>
+        <MudLayout>
+            <MudMainContent>
+                <MudGrid Spacing="@spacing" Justify="Justify.Center">
+                    <MudItem lg="4" xs="1"/>
+                    <MudItem lg="4" xs="10">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-1">
+                    <MudForm>
+                                <MudRadioGroup T="int" SelectedOptionChanged="OnBattleStyleChanged">
+                                <MudRadio Option="0">シングル</MudRadio>
+                                <MudRadio Option="1">ダブル</MudRadio>
+                            </MudRadioGroup>
+                        </MudForm>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem lg="4" xs="1"/>
+
+                    <MudItem lg="6">
+                            <MudForm>
+                            <MudRadioGroup T="int" SelectedOptionChanged="OnWeatherChanged">
+                                    <MudGrid Spacing="@spacing" Justify="Justify.Center">
+                                    <MudItem lg="1" />
+                                    <MudItem lg="2">
+                                        <MudRadio Option="0" Size="Size.Small">‐</MudRadio>
+                                    </MudItem>
+                                    <MudItem lg="2">
+                                    <MudRadio Option="1" Size="Size.Small">晴れ</MudRadio>
+                                    </MudItem>
+                                    <MudItem lg="2">
+                                    <MudRadio Option="2" Size="Size.Small">雨</MudRadio>
+                                    </MudItem>
+                                    <MudItem lg="2">
+                                    <MudRadio Option="3" Size="Size.Small">砂嵐</MudRadio>
+                                    </MudItem>
+                                    <MudItem lg="2">
+                                    <MudRadio Option="4" Size="Size.Small">雪</MudRadio>
+                                    </MudItem>
+                                    <MudItem lg="1" />
+                                    </MudGrid>
+                                </MudRadioGroup>
+                            </MudForm>
+                    </MudItem>
+                    <MudItem lg="6">
+                            <MudForm>
+                            <MudRadioGroup T="int" SelectedOptionChanged="OnFieldChanged">
+                                    <MudGrid Spacing="1" Justify="Justify.Center">
+                                    <MudItem lg="1" xs="0"/>
+                                    <MudItem lg="2">
+                                    <MudRadio Option="0" Size="Size.Small">‐</MudRadio>
+                                    </MudItem>
+                                    <MudItem lg="2">
+                                        <MudRadio Option="1" Size="Size.Small">エレキ</MudRadio>
+                                    </MudItem>
+                                    <MudItem lg="2">
+                                        <MudRadio Option="2" Size="Size.Small">グラス</MudRadio>
+                                    </MudItem>
+                                    <MudItem lg="2">
+                                        <MudRadio Option="3" Size="Size.Small">サイコ</MudRadio>
+                                    </MudItem>
+                                    <MudItem lg="2">
+                                        <MudRadio Option="4" Size="Size.Small">ミスト</MudRadio>
+                                    </MudItem>
+                                    <MudItem lg="1" xs="0"/>
+                                </MudGrid>
+                            </MudRadioGroup>
+                            </MudForm>
+                    </MudItem>
+
+                    <MudItem lg="2">
+                            <MudForm>
+                            <MudCheckBox T="bool" Checked="@DamageClacChamp.Shared.Models.DamageCalc.Gravity" Size="Size.Small" Label="じゅうりょく" Margin="Margin.Dense" CheckedChanged="@(x =>OnBattleSettingsChanged(0,x))" />
+                            </MudForm>
+                    </MudItem>
+                    <MudItem lg="2">
+                            <MudForm>
+                            <MudCheckBox T="bool" Checked="@DamageClacChamp.Shared.Models.DamageCalc.WonderRoom" Size="Size.Small" Label="ワンダールーム" Margin="Margin.Dense" CheckedChanged="@(x =>OnBattleSettingsChanged(1,x))" />
+                            </MudForm>
+                    </MudItem>
+                    <MudItem lg="2">
+                            <MudForm>
+                            <MudCheckBox T="bool" Checked="@DamageClacChamp.Shared.Models.DamageCalc.PlasmaShower" Size="Size.Small" Label="プラズマシャワー" Margin="Margin.Dense" CheckedChanged="@(x =>OnBattleSettingsChanged(2,x))" />
+                            </MudForm>
+                    </MudItem>
+                    <MudItem lg="2">
+                            <MudForm>
+                            <MudCheckBox T="bool" Checked="@DamageClacChamp.Shared.Models.DamageCalc.FairyAura" Size="Size.Small" Label="フェアリーオーラ" Margin="Margin.Dense" CheckedChanged="@(x =>OnBattleSettingsChanged(3,x))" />
+                            </MudForm>
+                    </MudItem>
+                    <MudItem lg="2">
+                            <MudForm>
+                            <MudCheckBox T="bool" Checked="@DamageClacChamp.Shared.Models.DamageCalc.DarkAura" Size="Size.Small" Label="ダークオーラ" Margin="Margin.Dense" CheckedChanged="@(x =>OnBattleSettingsChanged(4,x))" />
+                            </MudForm>
+                    </MudItem>
+                    <MudItem lg="2">
+                            <MudForm>
+                            <MudCheckBox T="bool" Checked="@DamageClacChamp.Shared.Models.DamageCalc.AuraBreak" Size="Size.Small" Label="オーラブレイク" Margin="Margin.Dense" CheckedChanged="@(x =>OnBattleSettingsChanged(5,x))" />
+                            </MudForm>
+                    </MudItem>
+
+                    <MudItem lg="4">
+                        <PokemonStatus Title="ポケモン1" OnStatusChangeEventCallback="@((x) => CalcDamage( x, 1 ))"></PokemonStatus>
+                    </MudItem>
+                    <MudItem lg="4">
+                        <DamageResult Title="ダメージ計算一覧1" damage="Damage" atk="pokemon1" def="pokemon2" damage_list_All="result1" damage_list_10="result1_10" damage_range="result2" damage_exp="result3" damage_min_max="result4" HP_Bar_Color="result5"></DamageResult>
+                    </MudItem>
+                    <MudItem lg="4">
+                        <PokemonStatus Title="ポケモン2" OnStatusChangeEventCallback="@((x) => CalcDamage( x, 2 ))"></PokemonStatus>
+                    </MudItem>
+
+                    <MudItem lg="4" />
+                    <MudItem lg="4">
+                        <DamageResult Title="ダメージ計算一覧2" damage="Damage" atk="pokemon2" def="pokemon1" damage_list_All="result6" damage_list_10="result6_10" damage_range="result7" damage_exp="result8" damage_min_max="result9" HP_Bar_Color="result10"></DamageResult>
+                    </MudItem>
+                    <MudItem lg="4" />
+                </MudGrid>
+                @Body
+            </MudMainContent>
+        </MudLayout>
+    </main>
+</div>
+
+@code {
+    [CascadingParameter] private UnexpectedException UnexpectedException_ { get; set; }
+    public int spacing { get; set; } = 2;
+
+    private DamageClacChamp.Shared.Models.PokemonDataReal? pokemon1 = null, pokemon2 = null;
+    private List<KeyValuePair<string, List<long>>>? result1 = null;
+    private List<KeyValuePair<string, List<long>>>? result1_10 = null;
+    private Dictionary<string, string>? result2 = null;
+    private Dictionary<string, string>? result3 = null;
+    private Dictionary<string, Tuple<long, long>>? result4 = null;
+    private Dictionary<string, Color>? result5 = null;
+    private List<KeyValuePair<string, List<long>>>? result6 = null;
+    private List<KeyValuePair<string, List<long>>>? result6_10 = null;
+    private Dictionary<string, string>? result7 = null;
+    private Dictionary<string, string>? result8 = null;
+    private Dictionary<string, Tuple<long, long>>? result9 = null;
+    private Dictionary<string, Color>? result10 = null;
+    private DamageClacChamp.Shared.Models.DamageCalc Damage = new DamageClacChamp.Shared.Models.DamageCalc();
+
+    private void OnBattleStyleChanged( int val )
+    {
+        DamageClacChamp.Shared.Models.DamageCalc.SelectedBattleStyle = val;
+        CalcDamage(null, 3);
+    }
+    private void OnWeatherChanged( int val )
+    {
+        DamageClacChamp.Shared.Models.DamageCalc.SelectedWeatherSettings = val;
+        CalcDamage(null, 3);
+    }
+    private void OnFieldChanged( int val )
+    {
+        DamageClacChamp.Shared.Models.DamageCalc.SelectedFieldSettings = val;
+        CalcDamage(null, 3);
+    }
+    private void OnBattleSettingsChanged( int idx, bool val )
+    {
+        switch ( idx )
+        {
+            case 0: DamageClacChamp.Shared.Models.DamageCalc.Gravity = val; break;
+            case 1: DamageClacChamp.Shared.Models.DamageCalc.WonderRoom = val; break;
+            case 2: DamageClacChamp.Shared.Models.DamageCalc.PlasmaShower = val; break;
+            case 3: DamageClacChamp.Shared.Models.DamageCalc.FairyAura = val; break;
+            case 4: DamageClacChamp.Shared.Models.DamageCalc.DarkAura = val; break;
+            case 5: DamageClacChamp.Shared.Models.DamageCalc.AuraBreak = val; break;
+            default: break;
+        }
+        CalcDamage(null, 3);
+    }
+
+    private Tuple<List<KeyValuePair<string, List<long>>>, List<KeyValuePair<string, List<long>>>, Dictionary<string, string>, Dictionary<string, string>, Dictionary<string, Tuple<long, long>>, Dictionary<string, Color>> CalcDamageMain(DamageClacChamp.Shared.Models.PokemonDataReal atk, DamageClacChamp.Shared.Models.PokemonDataReal def)
+    {
+        var tmp_result = Damage.calc(atk, def);
+        List<KeyValuePair<string, long>> tmp = new List<KeyValuePair<string, long>>();
+        List<KeyValuePair<string, List<long>>> res1 = new List<KeyValuePair<string, List<long>>>();
+        List<KeyValuePair<string, List<long>>> res1_10 = new List<KeyValuePair<string, List<long>>>();
+        Dictionary<string, string> res2 = new Dictionary<string, string>();
+        Dictionary<string, string> res3 = new Dictionary<string, string>();
+        Dictionary<string, Tuple<long, long>> res4 = new Dictionary<string, Tuple<long, long>>();
+        Dictionary<string, Color> res5 = new Dictionary<string, Color>();
+
+        // 与えるダメージの期待値でソートする -> ダメージの最大値の方が良いかも。。
+        foreach( var t in tmp_result )
+        {
+            tmp.Add(KeyValuePair.Create(t.Key, t.Value.Last()));
+        }
+        tmp.Sort( ( a, b ) => (int)b.Value - (int)a.Value );
+        foreach( var t in tmp )
+        {
+            res1.Add(KeyValuePair.Create(t.Key, tmp_result[t.Key]));
+            if (res1.Count() <= 10)
+                res1_10.Add(KeyValuePair.Create(t.Key, tmp_result[t.Key]));
+        }
+
+        foreach( var r in res1 )
+        {
+            long min = Math.Max(def.HP - r.Value[0], 0);
+            long max = Math.Max(def.HP - r.Value[15], 0);
+            res2[r.Key] = (((double)r.Value[0] / def.HP) * 100.0).ToString("F1") + "% ～ " + (((double)r.Value[15] / def.HP) * 100.0).ToString("F1") + "%";
+            res3[r.Key] = (((double)r.Value.Last() / def.HP ) * 100.0).ToString( "F1") + "%";
+            res4[r.Key] = (Tuple.Create( max, min ));
+            if (max / (double)def.HP >= 0.5)
+                res5[r.Key] = Color.Tertiary;
+            else if (max / (double)def.HP >= 0.25)
+                res5[r.Key] = Color.Warning;
+            else
+                res5[r.Key] = Color.Error;
+        }
+
+        return ( Tuple.Create( res1, res1_10, res2, res3, res4, res5 ) );
+    }
+
+    private void CalcDamage(DamageClacChamp.Shared.Models.PokemonDataReal? p, int idx )
+    {
+        if (idx == 1) pokemon1 = p;
+        else if (idx == 2) pokemon2 = p;
+        else if (idx == 3) ; // すでにポケモンが入力されていればダメージの再計算だけ実行する
+
+        if (pokemon1 == null) return;
+        if (pokemon2 == null) return;
+
+        ( result1, result1_10, result2, result3, result4, result5 ) = CalcDamageMain(pokemon1, pokemon2);
+        ( result6, result6_10, result7, result8, result9, result10 ) = CalcDamageMain(pokemon2, pokemon1);
+    }
+}

@@ -1,0 +1,75 @@
+﻿
+<MudDialog DiableSidePadding="true">
+    <DialogContent>
+        <MudContainer Style="max-height: 300px; overflow-y: scroll">
+            <MudGrid>
+                <MudItem lg="4" xs="4">
+                    <MudText>@damageDetail.Key</MudText>
+                </MudItem>
+                <MudItem lg="8" xs="8">@moveDetail.StrExp</MudItem>
+                <MudItem lg="4" xs="4">威力：@moveDetail.Power</MudItem>
+                <MudItem lg="4" xs="4">タイプ：@moveDetail.Type</MudItem>
+                <MudItem lg="4" xs="4">
+                    @if (moveDetail.Bite)
+                    {
+                        <span>噛みつく技</span>
+                    }
+                    @if (moveDetail.Pulse)
+                    {
+                        <span>波動技</span>
+                    }
+                    @if (moveDetail.Punch)
+                    {
+                        <span>パンチ技</span>
+                    }
+                    @if (moveDetail.Slice)
+                    {
+                        <span>切る技</span>
+                    }
+                    @if (moveDetail.Sound)
+                    {
+                        <span>音技</span>
+                    }
+                </MudItem>
+                <MudItem lg="4" xs="4">通常ダメージ</MudItem>
+                <MudItem lg="8" xs="8" />
+                <MudItem lg="12" xs="12">
+                    @foreach (var dam in damage_normal)
+                    {
+                        <span> @dam,</span>
+                    }
+                </MudItem>
+                <MudItem lg="4" xs="4">急所ダメージ</MudItem>
+                <MudItem lg="8" xs="8" />
+                <MudItem lg="12" xs="12">
+                    @foreach (var dam in damage_critical)
+                    {
+                        <span> @dam,</span>
+                    }
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@( () => MudDialog.Close())">閉じる</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public KeyValuePair<string, List<long>> damageDetail { get; set; }
+    [Parameter] public DamageClacChamp.Shared.Models.PokemonMove moveDetail { get; set; }
+    private List<long> damage_normal = new List<long>();
+    private List<long> damage_critical = new List<long>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        for ( int i = 0; i < 16; ++i )
+        {
+            damage_normal.Add( damageDetail.Value[i] );
+            damage_critical.Add(damageDetail.Value[i + 16]);
+        }
+    }
+}
