@@ -46,35 +46,6 @@
                     </MudItem>
                 </MudItem>
 
-                <MudItem lg="2" xs="2">
-                    <MudText>個体値</MudText>
-                </MudItem>
-                <MudItem lg="10" xs="10">
-                    <MudItem lg="12" xs="12">
-                        <MudGrid Spacing="0">
-                        <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[6]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(6, s))" />
-                        </MudItem>
-                        <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[7]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(7, s))" />
-                        </MudItem>
-                        <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[8]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(8, s))" />
-                        </MudItem>
-                        <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[9]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(9, s))" />
-                        </MudItem>
-                        <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[10]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(10, s))" />
-                        </MudItem>
-                        <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[11]" Variant="Variant.Outlined" Min="0" Max="31" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(11, s))" />
-                        </MudItem>
-                    </MudGrid>
-                </MudItem>
-                </MudItem>
-
-
         <MudItem lg="2" xs="2">
                     <MudText>努力値</MudText>
                 </MudItem>
@@ -82,34 +53,34 @@
                     <MudItem lg="12" xs="12">
                         <MudGrid Spacing="0">
                         <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[12]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(12, s))" />
+                        <MudNumericField T="int" Value="@status[12]" Variant="Variant.Outlined" Min="0" Max="32" Step="1" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(12, s))" />
                         </MudItem>
                         <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[13]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(13, s))" />
+                        <MudNumericField T="int" Value="@status[13]" Variant="Variant.Outlined" Min="0" Max="32" Step="1" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(13, s))" />
                         </MudItem>
                         <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[14]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(14, s))" />
+                        <MudNumericField T="int" Value="@status[14]" Variant="Variant.Outlined" Min="0" Max="32" Step="1" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(14, s))" />
                         </MudItem>
                         <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[15]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(15, s))" />
+                        <MudNumericField T="int" Value="@status[15]" Variant="Variant.Outlined" Min="0" Max="32" Step="1" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(15, s))" />
                         </MudItem>
                         <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[16]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(16, s))" />
+                        <MudNumericField T="int" Value="@status[16]" Variant="Variant.Outlined" Min="0" Max="32" Step="1" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(16, s))" />
                         </MudItem>
                         <MudItem lg="2" xs="2">
-                        <MudNumericField T="int" Value="@status[17]" Variant="Variant.Outlined" Min="0" Max="252" Step="4" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(17, s))" />
+                        <MudNumericField T="int" Value="@status[17]" Variant="Variant.Outlined" Min="0" Max="32" Step="1" Margin="Margin.Dense" ValueChanged="@(s => OnStatusChanged(17, s))" />
                         </MudItem>
                     </MudGrid>
                 </MudItem>
                 </MudItem>
                 <MudItem lg="2" xs="2">
-                    @if ( total_efv > 510 )
+                    @if ( total_efv > 66 )
                     {
-                        <MudText Color="Color.Error"><b>@total_efv</b> / 510</MudText>
+                        <MudText Color="Color.Error"><b>@total_efv</b> / 66</MudText>
                     }
                     else
                     {
-                        <MudText>@total_efv / 510</MudText>
+                        <MudText>@total_efv / 66</MudText>
                     }
                 </MudItem>
                 <MudItem lg="10" xs="10">
@@ -598,11 +569,11 @@
         status[5] = p.Speed;
 
         // HPを計算する
-        status[0] = ( status[0] * 2 + status[6] + status[12] / 4 ) * Level / 100 + Level + 10;
+        status[0] = ( status[0] * 2 + status[6] + Math.Min( status[12] * 8, 255 ) / 4 ) * Level / 100 + Level + 10;
         // それ以外のステータスを計算する
         for ( int i = 1; i < 6; ++i )
         {
-            status[i] = ( status[i] * 2 + status[6 + i] + status[12 + i] / 4 ) * Level / 100 + 5;
+            status[i] = ( status[i] * 2 + status[6 + i] + Math.Min( status[12 + i] * 8, 255 ) / 4 ) * Level / 100 + 5;
         }
 
         // 性格補正する
@@ -733,14 +704,14 @@
     private int[] _efvalToggleValue = new int[6];
     void _efvalToggleText( int idx )
     {
-        if (_efvalToggleValue[idx] == 252)
+        if (_efvalToggleValue[idx] == 32)
         {
             _efvalToggleValue[idx] = 0;
-            status[12 + idx] = 252;
+            status[12 + idx] = 32;
         }
         else
         {
-            _efvalToggleValue[idx] = 252;
+            _efvalToggleValue[idx] = 32;
             status[12 + idx] = 0;
         }
 
@@ -776,7 +747,7 @@
         }
 
         status[6] = status[7] = status[8] = status[9] = status[10] = status[11] = 31;
-        _efvalToggleValue[0] = _efvalToggleValue[1] = _efvalToggleValue[2] = _efvalToggleValue[3] = _efvalToggleValue[4] = _efvalToggleValue[5] = 252;
+        _efvalToggleValue[0] = _efvalToggleValue[1] = _efvalToggleValue[2] = _efvalToggleValue[3] = _efvalToggleValue[4] = _efvalToggleValue[5] = 32;
 
         // ローマ字→カタカナ変換辞書
         TranslateList["a"] = "ア"; TranslateList["ba"] = "バ";
