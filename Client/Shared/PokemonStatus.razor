@@ -108,6 +108,37 @@
                     </MudItem>
                 </MudItem>
 
+        <MudItem lg="2" xs="2">
+            <MudText>性格</MudText>
+        </MudItem>
+        <MudItem lg="10" xs="10">
+            <MudItem lg="12" xs="12">
+                <MudGrid Spacing="0">
+                    <MudItem lg="2" xs="2" />
+                    <MudItem lg="2" xs="2">
+                        <MudButton OnClick="@(s => OnNatureModChanged( 0, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[0] == 1 ? Color.Warning : Color.Default)">▲</MudButton>
+                        <MudButton OnClick="@(s => OnNatureModChanged( 0, -1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[0] == -1 ? Color.Primary : Color.Default)">▼</MudButton>
+                    </MudItem>
+                    <MudItem lg="2" xs="2">
+                        <MudButton OnClick="@(s => OnNatureModChanged( 1, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[1] == 1 ? Color.Warning : Color.Default)">▲</MudButton>
+                        <MudButton OnClick="@(s => OnNatureModChanged( 1, -1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[1] == -1 ? Color.Primary : Color.Default)">▼</MudButton>
+                    </MudItem>
+                    <MudItem lg="2" xs="2">
+                        <MudButton OnClick="@(s => OnNatureModChanged( 2, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[2] == 1 ? Color.Warning : Color.Default)">▲</MudButton>
+                        <MudButton OnClick="@(s => OnNatureModChanged( 2, -1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[2] == -1 ? Color.Primary : Color.Default)">▼</MudButton>
+                    </MudItem>
+                    <MudItem lg="2" xs="2">
+                        <MudButton OnClick="@(s => OnNatureModChanged( 3, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[3] == 1 ? Color.Warning : Color.Default)">▲</MudButton>
+                        <MudButton OnClick="@(s => OnNatureModChanged( 3, -1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[3] == -1 ? Color.Primary : Color.Default)">▼</MudButton>
+                    </MudItem>
+                    <MudItem lg="2" xs="2">
+                        <MudButton OnClick="@(s => OnNatureModChanged( 4, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[4] == 1 ? Color.Warning : Color.Default)">▲</MudButton>
+                        <MudButton OnClick="@(s => OnNatureModChanged( 4, -1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[4] == -1 ? Color.Primary : Color.Default)">▼</MudButton>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        </MudItem>
+
                 <MudItem lg="2" xs="2">
                     <MudText>ランク</MudText>
                 </MudItem>
@@ -455,6 +486,21 @@
     private void OnNatureSelected( string v )
     {
         nature_value = v;
+
+        // 性格選択に合わせて nature_mod を同期する
+        nature_mod = new int[5];
+        int nature_idx = Array.IndexOf( nature, nature_value );
+        if ( nature_idx > 0 )
+        {
+            --nature_idx;
+            int up_stat = nature_idx / 4;
+            int down_stat = nature_idx % 4;
+            if ( down_stat >= up_stat )
+                down_stat += 1;
+            nature_mod[up_stat] = 1;
+            nature_mod[down_stat] = -1;
+        }
+
         CalcStatus();
     }
     private void OnLevelChanged( int l )
@@ -576,17 +622,13 @@
             status[i] = ( status[i] * 2 + status[6 + i] + Math.Min( status[12 + i] * 8, 255 ) / 4 ) * Level / 100 + 5;
         }
 
-        // 性格補正する
-        int idx = Array.IndexOf(nature, nature_value);
-        if ( idx > 0 )
+        // 性格補正する (nature_mod ベース: 1=上昇1.1倍, -1=下降0.9倍, 0=無補正)
+        for ( int i = 0; i < 5; ++i )
         {
-            --idx;
-            int up_status = idx / 4;
-            int down_status = idx % 4;
-            if (down_status >= up_status)
-                down_status += 1;
-            status[1 + up_status] = (int)( status[1 + up_status] * 1.1 );
-            status[1 + down_status] = (int)(status[1 + down_status] * 0.9);
+            if ( nature_mod[i] == 1 )
+                status[1 + i] = (int)( status[1 + i] * 1.1 );
+            else if ( nature_mod[i] == -1 )
+                status[1 + i] = (int)( status[1 + i] * 0.9 );
         }
 
         // 計算が特殊な特性や技のためのウィンドウを表示させる
@@ -637,6 +679,45 @@
         OnStatusChangeEventCallback.InvokeAsync( real_pokemon );
     }
 
+private void OnNatureModChanged( int idx, int dir )
+    {
+        // トグル: 既に同じ補正が入っていたら無補正に戻す
+        if (nature_mod[idx] == dir)
+        {
+            nature_mod[idx] = 0;
+        }
+        else
+        {
+            nature_mod[idx] = dir;
+        }
+
+        // nature_mod が実在する性格の組み合わせかチェックし、一致すれば性格を同期
+        int up_count   = nature_mod.Count(x => x ==  1);
+        int down_count = nature_mod.Count(x => x == -1);
+
+        if (up_count == 1 && down_count == 1)
+        {
+            // 上昇1・下降1 -> 対応する性格を探す
+            int up_idx   = Array.IndexOf(nature_mod,  1); // 0=攻撃,1=防御,2=特攻,3=特防,4=素早
+            int down_idx = Array.IndexOf(nature_mod, -1);
+            // nature配列のインデックス計算: up_idx * 4 + (down_idx < up_idx ? down_idx : down_idx - 1) + 1
+            int nature_idx = up_idx * 4 + (down_idx < up_idx ? down_idx : down_idx - 1) + 1;
+            nature_value = nature[nature_idx];
+        }
+        else if (up_count == 0 && down_count == 0)
+        {
+            // 全て無補正 -> がんばりや
+            nature_value = nature[0];
+        }
+        else
+        {
+            // 2箇所以上に▲や▼が付いている -> 性格ボックスをクリア（空文字）
+            nature_value = "";
+        }
+
+        CalcStatus();
+    }
+
     private int Level = 50;
 
     private List<string> PokemonAbility = new List<string>();
@@ -685,6 +766,10 @@
     };
 
     private DamageCalcChamp.Shared.Models.PokemonDataManager PokemonManager = new DamageCalcChamp.Shared.Models.PokemonDataManager();
+
+    // 性格補正トグル: 攻撃/防御/特攻/特防/素早さ の補正状態 (-1: 下降, 0: 無補正, 1: 上昇)
+    // インデックス 0=攻撃, 1=防御, 2=特攻, 3=特防, 4=素早さ (status[1]～status[5]に対応)
+    private int[] nature_mod = new int[5];
 
     private int[] status = new int[18];
     private int[] rank = { 0, 0, 0, 0, 0 };
