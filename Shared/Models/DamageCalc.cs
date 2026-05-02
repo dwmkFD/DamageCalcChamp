@@ -1317,38 +1317,53 @@ namespace DamageCalcChamp.Shared.Models
                 }
 
                 long type_match_attack = 0;
-                if ( atk.ability == "てきおうりょく" && atk.Options[14] )
+                if ( atk.ability == "てきおうりょく" )
                 {
-                    // てきおうりょくで、テラスタイプと元タイプが一致する場合は 9216 / 4096倍
-                    // 同、テラスタイプと元タイプが不一致なら、テラスタイプと一致した時は 8192 / 4096倍、不一致なら 6144 / 4096倍
-                    if ( atk.type.Contains( atk.TeraType ) )
+                    if ( atk.Options[14] )
                     {
-                        if ( move.Type == atk.TeraType )
+                        // てきおうりょくで、テラスタイプと元タイプが一致する場合は 9216 / 4096倍
+                        // 同、テラスタイプと元タイプが不一致なら、テラスタイプと一致した時は 8192 / 4096倍、不一致なら 6144 / 4096倍
+                        if ( atk.type.Contains( atk.TeraType ) )
                         {
-                            type_match_attack += 5120;
+                            if ( move.Type == atk.TeraType )
+                            {
+                                type_match_attack += 5120;
+                            }
+                            else if ( atk.type.Contains( move.Type ) )
+                            {
+                                type_match_attack += 2048; // テラスタイプと技のタイプが一致せず、ただし元タイプと技のタイプが一致する場合は、通常のタイプ一致ボーナス
+                            }
                         }
-                        else if ( atk.type.Contains( move.Type ) )
+                        else
                         {
-                            type_match_attack += 2048; // テラスタイプと技のタイプが一致せず、ただし元タイプと技のタイプが一致する場合は、通常のタイプ一致ボーナス
+                            if ( move.Type == atk.TeraType )
+                            {
+                                type_match_attack += 4096; // テラスタイプと一致なら2.0倍
+                            }
+                            else if ( atk.type.Contains( move.Type ) )
+                            {
+                                type_match_attack += 2048;
+                            }
                         }
                     }
                     else
                     {
-                        if ( move.Type == atk.TeraType )
+                        // てきおうりょくで、テラスタルしていない時は、元のタイプと一致する時 8192 / 4096倍、不一致なら 4096 / 4096倍
+                        foreach ( var t in atk.type )
                         {
-                            type_match_attack += 4096; // テラスタイプと一致なら2.0倍
-                        }
-                        else if (atk.type.Contains(move.Type))
-                        {
-                            type_match_attack += 2048;
+                            if ( t == move.Type )
+                            {
+                                type_match_attack += 4096;
+                                break;
+                            }
                         }
                     }
                 }
-                else if (atk.ability != "へんげんじざい" && atk.ability != "リベロ")
+                else if ( atk.ability != "へんげんじざい" && atk.ability != "リベロ" )
                 {
-                    foreach (var t in TypeCheck)
+                    foreach ( var t in TypeCheck )
                     {
-                        if (t == move.Type)
+                        if ( t == move.Type )
                         {
                             // へんげんじざいとリベロ以外の特性なら単なるタイプ一致判定（1.5倍）
                             type_match_attack += 2048;
@@ -1361,7 +1376,7 @@ namespace DamageCalcChamp.Shared.Models
                         }
                         else
                         {
-                            if (atk.TeraType == "ステラ" && atk.Options[14])
+                            if ( atk.TeraType == "ステラ" && atk.Options[14] )
                             {
                                 // テラスタイプがステラでテラスタルしている時、タイプ不一致でもボーナス1.2倍がつく
                                 type_match_attack += 819;
@@ -1373,7 +1388,7 @@ namespace DamageCalcChamp.Shared.Models
                 {
                     // へんげんじざいとリベロの場合は全ての攻撃が必ずタイプ一致
                     // -> ノーマルスキンも事実上全ての技がタイプ一致だけど、実戦でエネコロロとか使ってる人は皆無なので、とりあえず放置
-                    if (atk.Options[14] == false)
+                    if ( atk.Options[14] == false )
                     {
                         type_match_attack += 2048;
                     }
@@ -1383,9 +1398,9 @@ namespace DamageCalcChamp.Shared.Models
                         // -> 元タイプはすでに変更済みなので、判定式自体は他特性と同じもので良い(もっとキレイなコードを書きたい。。)
                         if ( atk.TeraType.IsNullOrEmpty() == false )
                         {
-                            foreach (var t in TypeCheck)
+                            foreach ( var t in TypeCheck )
                             {
-                                if (t == move.Type)
+                                if ( t == move.Type )
                                 {
                                     type_match_attack += 2048;
                                 }
