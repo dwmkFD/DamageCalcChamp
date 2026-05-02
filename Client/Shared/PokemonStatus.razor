@@ -823,6 +823,7 @@ private void OnNatureModChanged( int idx, int dir )
         PokemonManager.InitializePokemonData7();
         PokemonManager.InitializePokemonData8();
         PokemonManager.InitializePokemonData9();
+        PokemonManager.InitializePokemonData99(); // リージョンフォームなどの登録漏れをここに一時的にまとめている
         PokemonNameList = PokemonManager.AllPokemonName();
 
         typechange_ability_type.Add("元タイプ");
