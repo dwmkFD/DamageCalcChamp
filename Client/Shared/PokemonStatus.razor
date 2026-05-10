@@ -183,12 +183,12 @@
                     </MudSelect>
                 </MudItem>
         <MudItem lg="4" xs="4">
-            @if ( teratype_value != "" )
-            {
-                <MudForm>
-                    <MudCheckBox T="bool" Checked="@options[14]" Size="Size.Small" Label="テラスタル" Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged( 14, x ))" />
-                </MudForm>
-            }
+            <MudSelect T="string" Label="テラスタイプ" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnTeraTypeSelected">
+                @foreach ( var t in teratype )
+                {
+                    <MudSelectItem T="string" Value="@t" />
+                }
+            </MudSelect>
         </MudItem>
 
             <MudItem lg="4" xs="4">
@@ -219,15 +219,15 @@
                     </MudForm>
                 }
             </MudItem>
-
         <MudItem lg="4" xs="4">
-            <MudSelect T="string" Label="テラスタイプ" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnTeraTypeSelected">
-                @foreach ( var t in teratype )
-                {
-                    <MudSelectItem T="string" Value="@t" />
-                }
-            </MudSelect>
+            @if ( teratype_value != "" )
+            {
+                <MudForm>
+                    <MudCheckBox T="bool" Checked="@options[14]" Size="Size.Small" Label="テラスタル" Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged( 14, x ))" />
+                </MudForm>
+            }
         </MudItem>
+
         <MudItem lg="4" xs="4">
             <MudForm>
                 <MudCheckBox T="bool" Checked="@options[25]" Size="Size.Small" Label="ダイマックス"
