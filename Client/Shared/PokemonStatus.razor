@@ -165,7 +165,7 @@
                 </MudItem>
                 </MudItem>
 
-                <MudItem lg="6" xs="6">
+                <MudItem lg="4" xs="4">
                     <MudSelect T="string" Label="特性" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnAbilitySelected">
                         <MudSelectItem Value="@("未発動")" />
                         @foreach( var a in PokemonAbility )
@@ -174,7 +174,7 @@
                         }
                     </MudSelect>
                 </MudItem>
-                <MudItem lg="6" xs="6">
+                <MudItem lg="4" xs="4">
             <MudSelect T="string" Label="道具" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnItemSelected">
                 @foreach( var i in PokemonItem )
                 {
@@ -182,6 +182,14 @@
                 }
                     </MudSelect>
                 </MudItem>
+        <MudItem lg="4" xs="4">
+            @if ( teratype_value != "" )
+            {
+                <MudForm>
+                    <MudCheckBox T="bool" Checked="@options[14]" Size="Size.Small" Label="テラスタル" Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged( 14, x ))" />
+                </MudForm>
+            }
+        </MudItem>
 
             <MudItem lg="4" xs="4">
                 @if (ability_value == "マルチスケイル" || ability_value == "ファントムガード")
@@ -211,14 +219,6 @@
                     </MudForm>
                 }
             </MudItem>
-            <MudItem lg="3" xs="3">
-                @if (teratype_value != "")
-                {
-                    <MudForm>
-                        <MudCheckBox  T="bool" Checked="@options[14]" Size="Size.Small" Label="テラスタル" Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged(14,x))" />
-                    </MudForm>
-                }
-            </MudItem>
 
         <MudItem lg="4" xs="4">
             <MudSelect T="string" Label="テラスタイプ" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnTeraTypeSelected">
@@ -240,7 +240,12 @@
                              Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged( 26, x ))" />
             </MudForm>
         </MudItem>
-
+        <MudItem lg="4" xs="4">
+            <MudForm>
+                <MudCheckBox T="bool" Checked="@options[27]" Size="Size.Small" Label="まもる"
+                             Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged( 27, x ))" />
+            </MudForm>
+        </MudItem>
 
                 <MudItem lg="4" xs="4">
                     <MudForm>

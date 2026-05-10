@@ -22,6 +22,7 @@ using static System.Net.Mime.MediaTypeNames;
  *  18: 眠り             19: 小さくなる       20: かたやぶり
  *  21: わざわいのうつわ 22: わざわいのおふだ 23: わざわいのたま
  *  24: わざわいのつるぎ 25: ダイマックス     26: Z技
+ *  27: まもる系
  */
 
 namespace DamageCalcChamp.Shared.Models
@@ -2131,8 +2132,31 @@ namespace DamageCalcChamp.Shared.Models
                     }
                 }
 
-                /* STEP12. Mprotect補正は第九世代には存在しない */
-                // -> 守る状態に対するZ技、ダイマックス技など
+                /* STEP12. Mprotect補正 */
+                // -> 守る状態に対するZ技、ダイマックス技、ふかしのこぶし、かんつうドリル
+                //  -> キョダイレンゲキ、キョダイイチゲキはどうなる？？
+                bool isMprotect =
+                    def.Options[27] &&                             // 守る状態
+                    ( atk.Options[25]                              // ダイマックス
+                   || atk.Options[26]                              // Zワザ
+                   || atk.ability == "ふかしのこぶし"              // 特性
+                   || atk.ability == "かんつうドリル" );
+
+                if ( isMprotect )
+                {
+                    // ダメージ × 1/4（= × 1024/4096）
+                    // 五捨五超入で計算
+                    for ( int i = 0; i < 16; ++i )
+                    {
+                        result[move.Name][i] *= 1024;
+                        result[move.Name][i] += 2048;
+                        result[move.Name][i] /= 4096;
+
+                        result_critical[move.Name][i] *= 1024;
+                        result_critical[move.Name][i] += 2048;
+                        result_critical[move.Name][i] /= 4096;
+                    }
+                }
 
                 /* STEP13. 計算結果を4096で割る */
                 // ここまでlong longで計算したのでint型に変換(別に全部long longにしても良いと思うんだけど…)
