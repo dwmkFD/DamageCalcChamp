@@ -66,6 +66,186 @@ namespace DamageCalcChamp.Shared.Models
             }
         }
 
+        /// Zワザの威力を計算し、技名をZワザの名前に変更する
+        private long CalcZMovePower( PokemonMove move, string atkName, out string zMoveName )
+        {
+            // ----------------------------------------------------------------
+            // 1. 専用Zワザ
+            // ----------------------------------------------------------------
+
+            if ( move.Name == "ボルテッカー" && atkName.Contains( "ピカチュウ" ) )
+            { zMoveName = "ひっさつのピカチュート"; return 210; }
+
+            if ( move.Name == "かげぬい" && atkName.Contains( "ジュナイパー" ) )
+            { zMoveName = "シャドーアローズストライク"; return 180; }
+
+            if ( move.Name == "DDラリアット" && atkName.Contains( "ガオガエン" ) )
+            { zMoveName = "ハイパーダーククラッシャー"; return 180; }
+
+            if ( move.Name == "うたかたのアリア" && atkName.Contains( "アシレーヌ" ) )
+            { zMoveName = "わだつみのシンフォニア"; return 195; }
+
+            if ( move.Name == "シャドースチール" && atkName.Contains( "マーシャドー" ) )
+            { zMoveName = "しちせいだっこんたい"; return 195; }
+
+            // サトシのピカチュウ専用（通常ピカチュウより先に判定）
+            if ( move.Name == "10まんボルト" && atkName.Contains( "サトシ" ) )
+            { zMoveName = "1000まんボルト"; return 195; }
+
+            // アローラライチュウ専用
+            if ( move.Name == "10まんボルト" && atkName.Contains( "ライチュウ" ) && atkName.Contains( "アローラ" ) )
+            { zMoveName = "ライトニングサーフライド"; return 175; }
+
+            if ( move.Name == "ギガインパクト" && atkName.Contains( "カビゴン" ) )
+            { zMoveName = "ほんきをだすこうげき"; return 210; }
+
+            if ( move.Name == "サイコキネシス" && atkName.Contains( "ミュウ" ) )
+            { zMoveName = "オリジンズスーパーノヴァ"; return 185; }
+
+            if ( move.Name == "メテオドライブ"
+                && ( atkName.Contains( "ソルガレオ" ) || atkName.Contains( "ネクロズマ" ) ) )
+            { zMoveName = "サンシャインスマッシャー"; return 200; }
+
+            if ( move.Name == "シャドーレイ"
+                && ( atkName.Contains( "ルナアーラ" ) || atkName.Contains( "ネクロズマ" ) ) )
+            { zMoveName = "ムーンライトブラスター"; return 200; }
+
+            if ( move.Name == "フォトンゲイザー" && atkName.Contains( "ネクロズマ" ) )
+            { zMoveName = "てんこがすめつぼうのひかり"; return 200; }
+
+            if ( move.Name == "じゃれつく" && atkName.Contains( "ミミッキュ" ) )
+            { zMoveName = "ぽかぼかフレンドタイム"; return 190; }
+
+            if ( move.Name == "ストーンエッジ" && atkName.Contains( "ルガルガン" ) )
+            { zMoveName = "ラジアルエッジストーム"; return 190; }
+
+            if ( move.Name == "スケイルノイズ" && atkName.Contains( "ジャラランガ" ) )
+            { zMoveName = "ブレイジングソウルビート"; return 185; }
+
+            // カプ系専用（固定ダメージなので威力変換対象外）
+            if ( move.Name == "しぜんのいかり"
+                && ( atkName.Contains( "カプ・コケコ" ) || atkName.Contains( "カプ・テテフ" )
+                  || atkName.Contains( "カプ・ブルル" ) || atkName.Contains( "カプ・レヒレ" ) ) )
+            { zMoveName = "ガーディアン・デ・アローラ"; return 0; }
+
+            // ----------------------------------------------------------------
+            // 2. タイプ別汎用Zワザ名の対応表（技名→Z技名）
+            // ----------------------------------------------------------------
+
+            // 以下switchでZ技名を決定する（威力は後続の汎用テーブルで計算）
+            zMoveName = move.Type switch
+            {
+                "ノーマル" => "ウルトラダッシュアタック",
+                "くさ" => "ブルームシャインエクストラ",
+                "ほのお" => "ダイナミックフルフレイム",
+                "みず" => "スーパーアクアトルネード",
+                "でんき" => "スパーキングギガボルト",
+                "ひこう" => "ファイナルダイブクラッシュ",
+                "かくとう" => "ぜんりょくむそうげきれつけん",
+                "じめん" => "ライジングランドオーバー",
+                "むし" => "ぜったいほしょくかいてんざん",
+                "いわ" => "ワールズエンドフォール",
+                "あく" => "ブラックホールイクリプス",
+                "こおり" => "レイジングジオフリーズ",
+                "どく" => "アシッドポイズンデリート",
+                "はがね" => "ちょうぜつらせんれんげき",
+                "ゴースト" => "むげんあんやへのいざない",
+                "エスパー" => "マキシマムサイブレイカー",
+                "ドラゴン" => "アルティメットドラゴンバーン",
+                "フェアリー" => "ラブリースターインパクト",
+                _ => move.Name, // 未知のタイプは元の名前のまま
+            };
+
+            // ----------------------------------------------------------------
+            // 3. 汎用テーブルに対応しない例外技（威力のみ固定・Z技名はタイプで決まる）
+            // ----------------------------------------------------------------
+
+            switch ( move.Name )
+            {
+                case "メガドレイン": return 120;
+                case "コアパニッシャー": return 140;
+                case "ウェザーボール": return 160;
+                case "たたりめ": return 160;
+                case "アシストパワー": return 160;
+                case "つけあがる": return 160;
+                case "フライングプレス": return 170;
+                case "サウザンアロー": return 180;
+                case "グランドフォース": return 185;
+                case "マルチアタック": return 185;
+                case "Vジェネレート": return 220;
+                case "くさむすび": return 160;
+                case "けたぐり": return 160;
+                case "しぜんのめぐみ": return 160;
+                case "ヒートスタンプ": return 160;
+                case "ヘビーボンバー": return 160;
+                case "しぼりとる": return 180;
+                case "にぎりつぶす": return 180;
+                case "プレゼント": return 100;
+                case "はきだす": return 100;
+                case "なげつける": return 100;
+                case "マグニチュード": return 140;
+                case "エレキボール": return 160;
+                case "ジャイロボール": return 160;
+                case "おしおき": return 160;
+                case "きりふだ": return 160;
+                case "じたばた": return 160;
+                case "きしかいせい": return 160;
+                case "ソニックブーム": return 100;
+                case "りゅうのいかり": return 100;
+                case "ちきゅうなげ": return 100;
+                case "ナイトヘッド": return 100;
+                case "サイコウェーブ": return 100;
+                case "いかりのまえば": return 100;
+                case "しぜんのいかり": return 100; // カプ系以外
+                case "カウンター": return 100;
+                case "ミラーコート": return 100;
+                case "がまん": return 100;
+                case "メタルバースト": return 100;
+                case "がむしゃら": return 160;
+                case "いのちがけ": return 180;
+                case "ハサミギロチン": return 180;
+                case "つのドリル": return 180;
+                case "じわれ": return 180;
+                case "ぜったいれいど": return 180;
+                case "おうふくビンタ": return 100;
+                case "みだれづき": return 100;
+                case "つっぱり": return 100;
+                case "みずしゅりけん": return 100;
+                case "れんぞくパンチ": return 100;
+                case "みだれひっかき": return 100;
+                case "とげキャノン": return 100;
+                case "ダブルニードル": return 100;
+                case "にどげり": return 100;
+                case "ダブルチョップ": return 100;
+                case "ホネブーメラン": return 100;
+                case "ふくろだたき": return 100;
+                case "トリプルキック": return 120;
+                case "ダブルアタック": return 140;
+                case "スイープビンタ": return 140;
+                case "タネマシンガン": return 140;
+                case "つららばり": return 140;
+                case "ロックブラスト": return 140;
+                case "ボーンラッシュ": return 140;
+                case "ミサイルばり": return 140;
+                case "ギアソーサー": return 180;
+            }
+
+            // ----------------------------------------------------------------
+            // 4. 汎用テーブル変換
+            // ----------------------------------------------------------------
+            long originalPower = move.Power;
+            if ( originalPower <= 55 ) return 100;
+            if ( originalPower <= 65 ) return 120;
+            if ( originalPower <= 75 ) return 140;
+            if ( originalPower <= 85 ) return 160;
+            if ( originalPower <= 95 ) return 175;
+            if ( originalPower <= 100 ) return 180;
+            if ( originalPower <= 110 ) return 185;
+            if ( originalPower <= 125 ) return 190;
+            if ( originalPower <= 130 ) return 195;
+            return 200; // 140以上
+        }
+
         private long CorrectPower(ref PokemonMove move, PokemonDataReal atk, PokemonDataReal def)
         {
             // 技の威力が変わる場合に補正する処理
@@ -81,6 +261,14 @@ namespace DamageCalcChamp.Shared.Models
                 power = CalcDynamaxPower( power, isFightingOrPoison );
 
                 return power; // 他の威力補正は不要（ダイマックス技は元の技効果を無視）
+            }
+
+            // Zワザの時
+            if ( atk.Options[26] && move.Category != 0 )
+            {
+                // Z技名は呼び出し元（STEP7直前）で設定済みのため、ここでは威力のみ返す
+                power = CalcZMovePower( move, atk.Name, out _ );
+                return power;
             }
 
             if ( move.Name == "アクロバット" )
@@ -1247,6 +1435,18 @@ namespace DamageCalcChamp.Shared.Models
                 /* STEP2-1. 威力を決定 */
                 long power = CorrectPower(ref move, atk, def);
 
+                // Zワザ時は技名をZ技名に書き換える（↑この処理と一緒にやれば良いような気もするが…）
+                string orgMoveName = "";
+                if ( atk.Options[26] && move.Category != 0 )
+                {
+                    CalcZMovePower( move, atk.Name, out string zName );
+                    if ( zName != move.Name ) // 実際に変換があった時だけ書き換える
+                    {
+                        orgMoveName = move.Name; // 元の技名をバックアップ
+                        move.Name = zName;    // Z技名に書き換え
+                    }
+                }
+
                 /* STEP2-2. ランク補正済みA/Dに対して急所判定する */
                 // -> すでに別途計算済みなので割愛
 
@@ -1976,6 +2176,12 @@ namespace DamageCalcChamp.Shared.Models
                 /* LAST STEP. 計算結果を結果配列に突っ込む */
                 /* LAST STEP2. 後始末 */
                 // 特殊な計算をしたフラグをクリアする
+
+                // Zワザで名前を書き換えた技名を元に戻す
+                if ( orgMoveName.IsNullOrEmpty() == false )
+                {
+                    move.Name = orgMoveName;
+                }
             }
 
             return (result);
