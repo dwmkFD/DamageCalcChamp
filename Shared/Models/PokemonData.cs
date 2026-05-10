@@ -14,7 +14,7 @@ namespace DamageCalcChamp.Shared.Models
         public int ZukanNo;
         public double Height, Weight;
         public List<string> MoveList;
-        public bool[] Options = new bool[30];
+        public bool[] Options = new bool[32];
         public string Item;
         public int[] Rank = { 0, 0, 0, 0, 0 };
         public int Special;

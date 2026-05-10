@@ -116,23 +116,23 @@
                 <MudGrid Spacing="0">
                     <MudItem lg="2" xs="2" />
                     <MudItem lg="2" xs="2">
-                        <MudButton OnClick="@(s => OnNatureModChanged( 0, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[0] == 1 ? Color.Warning : Color.Default)">▲</MudButton>
+                        <MudButton OnClick="@(s => OnNatureModChanged( 0, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[0] == 1 ? Color.Error : Color.Default)">▲</MudButton>
                         <MudButton OnClick="@(s => OnNatureModChanged( 0, -1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[0] == -1 ? Color.Primary : Color.Default)">▼</MudButton>
                     </MudItem>
                     <MudItem lg="2" xs="2">
-                        <MudButton OnClick="@(s => OnNatureModChanged( 1, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[1] == 1 ? Color.Warning : Color.Default)">▲</MudButton>
+                        <MudButton OnClick="@(s => OnNatureModChanged( 1, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[1] == 1 ? Color.Error : Color.Default)">▲</MudButton>
                         <MudButton OnClick="@(s => OnNatureModChanged( 1, -1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[1] == -1 ? Color.Primary : Color.Default)">▼</MudButton>
                     </MudItem>
                     <MudItem lg="2" xs="2">
-                        <MudButton OnClick="@(s => OnNatureModChanged( 2, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[2] == 1 ? Color.Warning : Color.Default)">▲</MudButton>
+                        <MudButton OnClick="@(s => OnNatureModChanged( 2, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[2] == 1 ? Color.Error : Color.Default)">▲</MudButton>
                         <MudButton OnClick="@(s => OnNatureModChanged( 2, -1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[2] == -1 ? Color.Primary : Color.Default)">▼</MudButton>
                     </MudItem>
                     <MudItem lg="2" xs="2">
-                        <MudButton OnClick="@(s => OnNatureModChanged( 3, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[3] == 1 ? Color.Warning : Color.Default)">▲</MudButton>
+                        <MudButton OnClick="@(s => OnNatureModChanged( 3, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[3] == 1 ? Color.Error : Color.Default)">▲</MudButton>
                         <MudButton OnClick="@(s => OnNatureModChanged( 3, -1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[3] == -1 ? Color.Primary : Color.Default)">▼</MudButton>
                     </MudItem>
                     <MudItem lg="2" xs="2">
-                        <MudButton OnClick="@(s => OnNatureModChanged( 4, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[4] == 1 ? Color.Warning : Color.Default)">▲</MudButton>
+                        <MudButton OnClick="@(s => OnNatureModChanged( 4, 1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[4] == 1 ? Color.Error : Color.Default)">▲</MudButton>
                         <MudButton OnClick="@(s => OnNatureModChanged( 4, -1 ))" Variant="Variant.Filled" FullWidth="true" Color="@(nature_mod[4] == -1 ? Color.Primary : Color.Default)">▼</MudButton>
                     </MudItem>
                 </MudGrid>
@@ -165,7 +165,7 @@
                 </MudItem>
                 </MudItem>
 
-                <MudItem lg="4" xs="4">
+                <MudItem lg="6" xs="6">
                     <MudSelect T="string" Label="特性" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnAbilitySelected">
                         <MudSelectItem Value="@("未発動")" />
                         @foreach( var a in PokemonAbility )
@@ -174,19 +174,11 @@
                         }
                     </MudSelect>
                 </MudItem>
-                <MudItem lg="5" xs="5">
+                <MudItem lg="6" xs="6">
             <MudSelect T="string" Label="道具" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnItemSelected">
                 @foreach( var i in PokemonItem )
                 {
                     <MudSelectItem T="string" Value="@i" />
-                }
-                    </MudSelect>
-                </MudItem>
-                <MudItem lg="3" xs="3">
-            <MudSelect T="string" Label="テラスタイプ" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnTeraTypeSelected">
-                @foreach( var t in teratype )
-                {
-                    <MudSelectItem T="string" Value="@t" />
                 }
                     </MudSelect>
                 </MudItem>
@@ -227,6 +219,27 @@
                     </MudForm>
                 }
             </MudItem>
+
+        <MudItem lg="4" xs="4">
+            <MudSelect T="string" Label="テラスタイプ" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnTeraTypeSelected">
+                @foreach ( var t in teratype )
+                {
+                    <MudSelectItem T="string" Value="@t" />
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem lg="4" xs="4">
+            <MudForm>
+                <MudCheckBox T="bool" Checked="@options[25]" Size="Size.Small" Label="ダイマックス"
+                             Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged( 25, x ))" />
+            </MudForm>
+        </MudItem>
+        <MudItem lg="4" xs="4">
+            <MudForm>
+                <MudCheckBox T="bool" Checked="@options[26]" Size="Size.Small" Label="Zワザ"
+                             Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged( 26, x ))" />
+            </MudForm>
+        </MudItem>
 
 
                 <MudItem lg="4" xs="4">
@@ -620,6 +633,12 @@
         for ( int i = 1; i < 6; ++i )
         {
             status[i] = ( status[i] * 2 + status[6 + i] + Math.Min( status[12 + i] * 8, 255 ) / 4 ) * Level / 100 + 5;
+        }
+
+        // ダイマックス時はHPを2倍にする
+        if ( options[25] )
+        {
+            status[0] *= 2;
         }
 
         // 性格補正する (nature_mod ベース: 1=上昇1.1倍, -1=下降0.9倍, 0=無補正)

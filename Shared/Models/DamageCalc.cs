@@ -21,7 +21,7 @@ using static System.Net.Mime.MediaTypeNames;
  *  15: 毒・猛毒         16: 火傷             17: 麻痺
  *  18: 眠り             19: 小さくなる       20: かたやぶり
  *  21: わざわいのうつわ 22: わざわいのおふだ 23: わざわいのたま
- *  24: わざわいのつるぎ
+ *  24: わざわいのつるぎ 25: ダイマックス     26: Z技
  */
 
 namespace DamageCalcChamp.Shared.Models
@@ -38,10 +38,50 @@ namespace DamageCalcChamp.Shared.Models
             MoveManager = new PokemonMoveManager();
             TypeCompatible = new PokemonType();
         }
+
+        // ダイマックス時に威力が変わる技の変換
+        private long CalcDynamaxPower( long originalPower, bool isFightingOrPoison )
+        {
+            // キョダイマックス技の場合の補正もしたい（剣盾御三家だけ？）
+
+            if ( isFightingOrPoison )
+            {
+                if ( originalPower <= 40 ) return 70;
+                else if ( originalPower <= 50 ) return 75;
+                else if ( originalPower <= 60 ) return 80;
+                else if ( originalPower <= 70 ) return 85;
+                else if ( originalPower <= 100 ) return 90;
+                else if ( originalPower <= 140 ) return 95;
+                else return 100;
+            }
+            else
+            {
+                if ( originalPower <= 40 ) return 90;
+                else if ( originalPower <= 50 ) return 100;
+                else if ( originalPower <= 60 ) return 110;
+                else if ( originalPower <= 70 ) return 120;
+                else if ( originalPower <= 100 ) return 130;
+                else if ( originalPower <= 140 ) return 140;
+                else return 150;
+            }
+        }
+
         private long CorrectPower(ref PokemonMove move, PokemonDataReal atk, PokemonDataReal def)
         {
             // 技の威力が変わる場合に補正する処理
             long power = move.Power;
+
+            // ダイマックス中の時
+            if ( atk.Options[25] && move.Category != 0 && move.Name.StartsWith( "キョダイ" ) == false ) // ダイマックスON かつ攻撃技 かつダイマックス技ではない
+            {
+                // 特殊なZ技（ミミッキュZやミュウZなどを持っている時だけ使えるものなど）も除外したい
+                // -> あるいは、ポケモンデータの方から削除して、固有処理CalcZMovePower()を実装するべきかも
+
+                bool isFightingOrPoison = ( move.Type == "かくとう" || move.Type == "どく" );
+                power = CalcDynamaxPower( power, isFightingOrPoison );
+
+                return power; // 他の威力補正は不要（ダイマックス技は元の技効果を無視）
+            }
 
             if ( move.Name == "アクロバット" )
             {
