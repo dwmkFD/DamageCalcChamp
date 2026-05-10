@@ -1444,7 +1444,7 @@ namespace DamageCalcChamp.Shared.Models
                     if ( zName != move.Name ) // 実際に変換があった時だけ書き換える
                     {
                         orgMoveName = move.Name; // 元の技名をバックアップ
-                        move.Name = zName;    // Z技名に書き換え
+                        move.Name = $"{zName}（{move.Name}）";    // Z技名に書き換え
                     }
                 }
 
