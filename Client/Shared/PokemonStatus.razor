@@ -228,12 +228,35 @@
             }
         </MudItem>
 
-        <MudItem lg="4" xs="4">
-            <MudForm>
-                <MudCheckBox T="bool" Checked="@options[25]" Size="Size.Small" Label="ダイマックス"
-                             Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged( 25, x ))" />
-            </MudForm>
-        </MudItem>
+        @if ( IsGigantamaxCapable )
+        {
+            // キョダイマックス対応ポケモンは2択で表示
+            <MudItem lg="2" xs="2">
+                <MudForm>
+                    <MudCheckBox T="bool" Checked="@options[25]" Size="Size.Small"
+                                 Label="ダイマックス" Margin="Margin.Dense"
+                                 CheckedChanged="@((bool x) => OnDynamaxChanged(x))" />
+                </MudForm>
+            </MudItem>
+            <MudItem lg="2" xs="2">
+                <MudForm>
+                    <MudCheckBox T="bool" Checked="@options[28]" Size="Size.Small"
+                                 Label="キョダイマックス" Margin="Margin.Dense"
+                                 CheckedChanged="@((bool x) => OnGigantamaxChanged(x))" />
+                </MudForm>
+            </MudItem>
+        }
+        else
+        {
+            // 通常ポケモンはダイマックスのみ表示
+            <MudItem lg="4" xs="4">
+                <MudForm>
+                    <MudCheckBox T="bool" Checked="@options[25]" Size="Size.Small"
+                                 Label="ダイマックス" Margin="Margin.Dense"
+                                 CheckedChanged="@((bool x) => OnOptionsChanged(25, x))" />
+                </MudForm>
+            </MudItem>
+        }
         <MudItem lg="4" xs="4">
             <MudForm>
                 <MudCheckBox T="bool" Checked="@options[26]" Size="Size.Small" Label="Zワザ"
@@ -375,6 +398,19 @@
 
     private string PokemonName;
     private List<string> PokemonNameList = new List<string>();
+    private static readonly HashSet<string> GigantamaxPokemons = new() {
+        "フシギバナ", "リザードン", "カメックス",
+        "バタフリー", "ピカチュウ", "ニャース",
+        "カイリキー", "ゲンガー", "キングラー",
+        "ラプラス", "イーブイ", "カビゴン",
+        "メルメタル",
+        "ゴリランダー", "エースバーン", "インテレオン",
+        "アーマーガア", "ジュラルドン", "ダストダス",
+        "ダイオウドウ", "オーロンゲ", "ストリンダー",
+        // 今後追加予定のポケモンはここに足す
+    };
+    private bool IsGigantamaxCapable => GigantamaxPokemons.Contains( PokemonName );
+
     private Dictionary<string, string> TranslateList = new Dictionary<string, string>();
 
     private List<string> trans_katakana( string in_str )
@@ -499,6 +535,11 @@
     private void OnPokemonNameSelected( string name ) // ポケモン名が入力された
     {
         PokemonName = name;
+        // キョダイマックス非対応ポケモンに切り替えたらフラグをリセット
+        if ( !GigantamaxPokemons.Contains( name ) )
+        {
+            options[28] = false;
+        }
         CalcStatus();
     }
     private void OnNatureSelected( string v )
@@ -579,6 +620,21 @@
     private void OnTypeChangeAbilitySelected( string s )
     {
         typechange_ability_string = s;
+        CalcStatus();
+    }
+
+    // ダイマックス/キョダイマックスの切り替えは専用処理
+    private void OnDynamaxChanged( bool val )
+    {
+        options[25] = val;
+        if ( val ) options[28] = false; // 一方をONにしたらもう一方をOFF
+        CalcStatus();
+    }
+
+    private void OnGigantamaxChanged( bool val )
+    {
+        options[28] = val;
+        if ( val ) options[25] = false;
         CalcStatus();
     }
 

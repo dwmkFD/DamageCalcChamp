@@ -22,7 +22,7 @@ using static System.Net.Mime.MediaTypeNames;
  *  18: 眠り             19: 小さくなる       20: かたやぶり
  *  21: わざわいのうつわ 22: わざわいのおふだ 23: わざわいのたま
  *  24: わざわいのつるぎ 25: ダイマックス     26: Z技
- *  27: まもる系
+ *  27: まもる系         28: キョダイマックス
  */
 
 namespace DamageCalcChamp.Shared.Models
@@ -40,10 +40,24 @@ namespace DamageCalcChamp.Shared.Models
             TypeCompatible = new PokemonType();
         }
 
+        // キョダイマックスで威力が変わる技を個別に設定
+        private static readonly Dictionary<string, string> GigantamaxFixed160 = new() {
+            { "ゴリランダー", "くさ" },    // キョダイコランダ
+            { "エースバーン", "ほのお" },  // キョダイカキュウ
+            { "インテレオン", "みず" },    // キョダイソゲキ
+        };
+
         // ダイマックス時に威力が変わる技の変換
-        private long CalcDynamaxPower( long originalPower, bool isFightingOrPoison )
+        private long CalcDynamaxPower( long originalPower, bool isFightingOrPoison,
+            bool isGigantamax = false, string pokemonName = "", string moveType = "" )
         {
-            // キョダイマックス技の場合の補正もしたい（剣盾御三家だけ？）
+            // キョダイマックスで威力160固定の組み合わせチェック
+            if ( isGigantamax
+                && GigantamaxFixed160.TryGetValue( pokemonName, out var fixedType )
+                && fixedType == moveType )
+            {
+                return 160;
+            }
 
             if ( isFightingOrPoison )
             {
@@ -252,16 +266,20 @@ namespace DamageCalcChamp.Shared.Models
             // 技の威力が変わる場合に補正する処理
             long power = move.Power;
 
-            // ダイマックス中の時
-            if ( atk.Options[25] && move.Category != 0 && move.Name.StartsWith( "キョダイ" ) == false ) // ダイマックスON かつ攻撃技 かつダイマックス技ではない
+            // ダイマックス or キョダイマックス威力変換
+            bool isDynamax = atk.Options[25];
+            bool isGigantamax = atk.Options[28];
+
+            if ( ( isDynamax || isGigantamax ) && move.Category != 0 && move.Name.StartsWith( "キョダイ" ) == false ) // 攻撃技のみ
             {
-                // 特殊なZ技（ミミッキュZやミュウZなどを持っている時だけ使えるものなど）も除外したい
-                // -> あるいは、ポケモンデータの方から削除して、固有処理CalcZMovePower()を実装するべきかも
-
                 bool isFightingOrPoison = ( move.Type == "かくとう" || move.Type == "どく" );
-                power = CalcDynamaxPower( power, isFightingOrPoison );
-
-                return power; // 他の威力補正は不要（ダイマックス技は元の技効果を無視）
+                return CalcDynamaxPower(  // 他の威力補正は不要（ダイマックス技は元の技効果を無視）
+                    power,
+                    isFightingOrPoison,
+                    isGigantamax: isGigantamax,
+                    pokemonName: atk.Name,
+                    moveType: move.Type
+                );
             }
 
             // Zワザの時
