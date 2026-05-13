@@ -118,14 +118,14 @@ namespace DamageCalcChamp.Shared.Models
             { zMoveName = "オリジンズスーパーノヴァ"; return 185; }
 
             if ( move.Name == "メテオドライブ"
-                && ( atkName.Contains( "ソルガレオ" ) || atkName.Contains( "ネクロズマ" ) ) )
+                && ( atkName.Contains( "ソルガレオ" ) || atkName.Contains( "ネクロズマ(たそがれ" ) ) )
             { zMoveName = "サンシャインスマッシャー"; return 200; }
 
             if ( move.Name == "シャドーレイ"
-                && ( atkName.Contains( "ルナアーラ" ) || atkName.Contains( "ネクロズマ" ) ) )
+                && ( atkName.Contains( "ルナアーラ" ) || atkName.Contains( "ネクロズマ(あかつき" ) ) )
             { zMoveName = "ムーンライトブラスター"; return 200; }
 
-            if ( move.Name == "フォトンゲイザー" && atkName.Contains( "ネクロズマ" ) )
+            if ( move.Name == "フォトンゲイザー" && atkName.Contains( "ウルトラネクロズマ" ) )
             { zMoveName = "てんこがすめつぼうのひかり"; return 200; }
 
             if ( move.Name == "じゃれつく" && atkName.Contains( "ミミッキュ" ) )
