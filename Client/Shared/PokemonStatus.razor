@@ -6,14 +6,13 @@
                         <MudAutocomplete T="string" Label="ポケモン" SearchFunc="@search_pokemon" CoerceText="false" Variant="Variant.Outlined" Margin="Margin.Dense" ValueChanged="OnPokemonNameSelected" />
                     </MudItem>
                     <MudItem lg="4" xs="4">
-                    <MudSelect T="string" Label="性格" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnNatureSelected">
-                        @foreach( var n in nature )
-                        {
-                            <MudSelectItem T="string" Value="@n" />
-                        }
+                        <MudSelect T="string" Label="テラスタイプ" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnTeraTypeSelected">
+                            @foreach ( var t in teratype )
+                            {
+                                <MudSelectItem T="string" Value="@t" />
+                            }
                         </MudSelect>
                     </MudItem>
-
                     <MudItem lg="2" xs="2">
                         <MudNumericField T="int" Label="レベル" Variant="Variant.Outlined" Min="1" Max="100" Margin="Margin.Dense" Value="@Level" ValueChanged="OnLevelChanged" />
                     </MudItem>
@@ -109,7 +108,7 @@
                 </MudItem>
 
         <MudItem lg="2" xs="2">
-            <MudText>性格</MudText>
+            <MudText>性格補正</MudText>
         </MudItem>
         <MudItem lg="10" xs="10">
             <MudItem lg="12" xs="12">
@@ -183,12 +182,12 @@
                     </MudSelect>
                 </MudItem>
         <MudItem lg="4" xs="4">
-            <MudSelect T="string" Label="テラスタイプ" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Margin="Margin.Dense" ValueChanged="OnTeraTypeSelected">
-                @foreach ( var t in teratype )
-                {
-                    <MudSelectItem T="string" Value="@t" />
-                }
-            </MudSelect>
+            @if ( teratype_value != "" )
+            {
+                <MudForm>
+                    <MudCheckBox T="bool" Checked="@options[14]" Size="Size.Small" Label="テラスタル" Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged( 14, x ))" />
+                </MudForm>
+            }
         </MudItem>
 
             <MudItem lg="4" xs="4">
@@ -219,26 +218,18 @@
                     </MudForm>
                 }
             </MudItem>
-        <MudItem lg="4" xs="4">
-            @if ( teratype_value != "" )
-            {
-                <MudForm>
-                    <MudCheckBox T="bool" Checked="@options[14]" Size="Size.Small" Label="テラスタル" Margin="Margin.Dense" CheckedChanged="@(x => OnOptionsChanged( 14, x ))" />
-                </MudForm>
-            }
-        </MudItem>
 
         @if ( IsGigantamaxCapable )
         {
             // キョダイマックス対応ポケモンは2択で表示
-            <MudItem lg="2" xs="2">
+            <MudItem lg="4" xs="4">
                 <MudForm>
                     <MudCheckBox T="bool" Checked="@options[25]" Size="Size.Small"
                                  Label="ダイマックス" Margin="Margin.Dense"
                                  CheckedChanged="@((bool x) => OnDynamaxChanged(x))" />
                 </MudForm>
             </MudItem>
-            <MudItem lg="2" xs="2">
+            <MudItem lg="4" xs="4">
                 <MudForm>
                     <MudCheckBox T="bool" Checked="@options[28]" Size="Size.Small"
                                  Label="キョダイマックス" Margin="Margin.Dense"
@@ -256,6 +247,7 @@
                                  CheckedChanged="@((bool x) => OnOptionsChanged(25, x))" />
                 </MudForm>
             </MudItem>
+            <MudItem lg="4" xs="4"></MudItem>
         }
         <MudItem lg="4" xs="4">
             <MudForm>
