@@ -719,6 +719,18 @@ namespace DamageCalcChamp.Shared.Models
             return (power);
         }
 
+        PokemonDataReal ApplyAbility( in PokemonDataReal p )
+        {
+            if ( p.ability == "はりきり" )
+            {
+                // 特性がはりきりなら攻撃1.5倍(切り捨て)
+                p.Attack *= 6144;
+                p.Attack /= 4096;
+            }
+
+            return ( p );
+        }
+
         PokemonDataReal CorrectRank(in PokemonDataReal p )
         {
             int[] status = { p.Attack, p.Block, p.Contact, p.Defense, p.Speed };
@@ -738,14 +750,7 @@ namespace DamageCalcChamp.Shared.Models
             p.Contact = status[2]; p.Defense = status[3];
             p.Speed = status[4];
 
-            if ( p.ability == "はりきり" )
-            {
-                // 特性がはりきりなら攻撃1.5倍(切り捨て)
-                p.Attack *= 6144;
-                p.Attack /= 4096;
-            }
-
-            return ( p );
+            return ( ApplyAbility( p ) );
         }
 
         PokemonDataReal CorrectRankCritical( in PokemonDataReal p )
@@ -783,14 +788,7 @@ namespace DamageCalcChamp.Shared.Models
             p.Attack = status[0]; p.Block = status[1];
             p.Contact = status[2]; p.Defense = status[3];
 
-            if (p.ability == "はりきり")
-            {
-                // 特性がはりきりなら攻撃1.5倍(切り捨て)
-                p.Attack *= 6144;
-                p.Attack /= 4096;
-            }
-
-            return ( p );
+            return ( ApplyAbility( p ) );
         }
 
         int CorrectParadoxRankPos( in PokemonDataReal p )
@@ -806,13 +804,39 @@ namespace DamageCalcChamp.Shared.Models
             tmp.Sort( ( x, y ) => y.Item2 - x.Item2 );
             return ( tmp[0].Item1 );
         }
+
+        int GetParadoxBoostPos( in PokemonDataReal p )
+        {
+            if ( ( p.ability == "こだいかっせい" && ( SelectedWeatherSettings == 1 || p.Item == "ブーストエナジー" ) )
+                || ( p.ability == "クォークチャージ" && ( SelectedFieldSettings == 1 || p.Item == "ブーストエナジー" ) ) )
+            {
+                return ( CorrectParadoxRankPos( p ) );
+            }
+
+            return ( 0 );
+        }
+
+        void ApplyParadoxBoost( in PokemonDataReal p, int pos )
+        {
+            switch ( pos )
+            {
+                case 1: p.Attack *= 5325; p.Attack += 2048; p.Attack /= 4096; break;
+                case 2: p.Block *= 5325; p.Block += 2048; p.Block /= 4096; break;
+                case 3: p.Contact *= 5325; p.Contact += 2048; p.Contact /= 4096; break;
+                case 4: p.Defense *= 5325; p.Defense += 2048; p.Defense /= 4096; break;
+                case 5: p.Speed *= 6144; p.Speed += 2048; p.Speed /= 4096; break;
+                default: break;
+            }
+
+        }
+
         Tuple<PokemonDataReal, PokemonDataReal> CorrectParadoxRank( in PokemonDataReal p, in PokemonDataReal p_cri)
         {
-            if ((p.ability == "こだいかっせい" && (SelectedWeatherSettings == 1 || p.Item == "ブーストエナジー"))
-                || (p.ability == "クォークチャージ" && (SelectedFieldSettings == 1 || p.Item == "ブーストエナジー")))
+            if ( ( p.ability == "こだいかっせい" && ( SelectedWeatherSettings == 1 || p.Item == "ブーストエナジー" ) )
+            || ( p.ability == "クォークチャージ" && ( SelectedFieldSettings == 1 || p.Item == "ブーストエナジー" ) ) )
             {
-                int pos = CorrectParadoxRankPos(p); // ランク補正済みのステータスに対して補正する
-                switch (pos)
+                int pos = CorrectParadoxRankPos( p ); // ランク補正済みのステータスに対して補正する
+                switch ( pos )
                 {
                     case 1:
                         p.Attack *= 5325; p.Attack += 2048; p.Attack /= 4096;
@@ -891,6 +915,12 @@ namespace DamageCalcChamp.Shared.Models
                 {
                     // ボディプレスは防御をAとして計算する
                     A *= atk.Block;
+
+                    // ただし、パラドックスが使用する時は、防御ではなく攻撃のブーストを参照するらしい
+                    if ( GetParadoxBoostPos( atk ) == 2 )
+                    {
+                        // この時点で計算すると正確な数値にならないが、どうやって元に戻すか…
+                    }
                 }
                 else if (move.Name == "イカサマ")
                 {
@@ -1298,10 +1328,29 @@ namespace DamageCalcChamp.Shared.Models
             CorrectRankCritical(atk_cri_tmp);
             CorrectRankCritical(def_cri_tmp);
 
-            // こだいかっせい/クォークチャージが発動する場合のステータス補正
+            // こだいかっせい/クォークチャージが発動する場合のステータス補正を計算する
+            int atk_paradox_pos = GetParadoxBoostPos( atk_tmp );
+            int def_paradox_pos = GetParadoxBoostPos( def_tmp );
             PokemonDataReal atk, def, atk_cri, def_cri;
-            ( atk, atk_cri ) = CorrectParadoxRank(atk_tmp, atk_cri_tmp);
-            ( def, def_cri ) = CorrectParadoxRank(def_tmp, def_cri_tmp);
+            atk = atk_tmp; ApplyParadoxBoost( atk, atk_paradox_pos );
+            def = def_tmp; ApplyParadoxBoost( def, def_paradox_pos );
+            atk_cri = atk_cri_tmp; ApplyParadoxBoost( atk_cri, atk_paradox_pos );
+            def_cri = def_cri_tmp; ApplyParadoxBoost( def_cri, def_paradox_pos );
+
+            // ランク補正を無視する技の準備
+            // はりきりなどの特性やパラドックスの能力上昇は適用するため
+            PokemonDataReal atk_norank = new PokemonDataReal( Atk.Name, Atk.type[0], Atk.type[1], Atk.TeraType, Atk.Level,
+                Atk.HP, Atk.Attack, Atk.Block, Atk.Contact, Atk.Defense, Atk.Speed, Atk.ZukanNo, Atk.Height, Atk.Weight,
+                Atk.ability, Atk.Item, Atk.Rank, Atk.Options, Atk.Special, Atk.MoveList );
+            PokemonDataReal def_norank = new PokemonDataReal( Def.Name, Def.type[0], Def.type[1], Def.TeraType, Def.Level,
+                Def.HP, Def.Attack, Def.Block, Def.Contact, Def.Defense, Def.Speed, Def.ZukanNo, Def.Height, Def.Weight,
+                Def.ability, Def.Item, Def.Rank, Def.Options, Def.Special, Def.MoveList );
+            ApplyAbility( atk_norank ); ApplyParadoxBoost( atk_norank, atk_paradox_pos );
+            ApplyAbility( def_norank ); ApplyParadoxBoost( def_norank, def_paradox_pos );
+
+            // ループ内で書き換える可能性があるので、ここで保存しておく
+            PokemonDataReal def_backup = def;
+            PokemonDataReal def_cri_backup = def_cri;
 
             foreach ( var atkmove in Atk.MoveList )
             {
@@ -1430,6 +1479,11 @@ namespace DamageCalcChamp.Shared.Models
                 long A_critical = 1, D_critical = 1;
                 long M = 1;
                 long Mhalf = 1, Mfilter = 1, MTwice = 1;
+
+                /* STEP0. ランク補正や能力上昇系特性を事前に処理する */
+                bool ignoreRankMove = move.Name == "せいなるつるぎ" || move.Name == "DDラリアット";
+                def = ignoreRankMove ? def_norank : def_backup;
+                def_cri = ignoreRankMove ? def_norank : def_cri_backup;
 
                 /* STEP1. A/Dを決定 */ // --> 要確認！！！　ランク補正ってここのA/Dを直接いじる？ -> もう一個、こだわり系はステータス1.5倍だよね？ここ？？
                 ( A, D ) = calcAD(A, D, atk, def, move, move.Category);
