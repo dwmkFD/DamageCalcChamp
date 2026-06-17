@@ -2250,21 +2250,39 @@ namespace DamageCalcChamp.Shared.Models
                 /* STEP14. 期待値を計算する */
                 // -> トレ天の計算結果と違うんだけど何で…？
                 double tmp_exp = 0.0;
+
+                /* STEP14.1 命中率を計算する */
                 double hustle_acc = 1.0;
+                double calc_acc = 100.0;
                 if ( atk.ability == "はりきり" )
                 {
                     // 特性はりきりなら命中率0.8倍
                     hustle_acc = 0.8;
                 }
+                if ( atk.ability == "しょうりのほし" )
+                {
+                    // 特性しょうりのほしなら命中率1.1倍
+                    // 本来、ダブルバトルで味方の命中も上がるが、期待値計算にしか使わないので一旦保留
+                    // -> 見やすいか？は別として、表示をダブル用に拡張するのもアリか…？
+                    hustle_acc = 1.1; // 変数名を要検討
+                }
+
+                calc_acc = Math.Min( ( move.Accuracy / 100.0 ) * hustle_acc, 100.0 );
+                if ( atk.ability == "ノーガード" || def.ability == "ノーガード" )
+                {
+                    // 攻撃側もしくは防御側の特性がノーガードなら必中
+                    calc_acc = 1.0;
+                }
+
                 for (int i = 0; i < 16; ++i)
                 {
                     // 基本ダメージは、計算結果 × 急所に"当たらない"確率 × 技の命中率
-                    tmp_exp += (result[move.Name][i] / 16.0) * (1.0 - CalcCriticalProbability(move, atk, def)) * ( (move.Accuracy / 100.0) * hustle_acc );
+                    tmp_exp += (result[move.Name][i] / 16.0) * (1.0 - CalcCriticalProbability(move, atk, def)) * calc_acc;
                 }
                 for (int i = 0; i < 16; ++i)
                 {
                     // 急所に当たった場合のダメージは、計算結果 × 急所に"当たる"確率 × 技の命中率
-                    tmp_exp += (result_critical[move.Name][i] / 16.0) * CalcCriticalProbability(move, atk, def) * ( (move.Accuracy / 100.0) * hustle_acc );
+                    tmp_exp += (result_critical[move.Name][i] / 16.0) * CalcCriticalProbability(move, atk, def) * calc_acc;
                 }
                 result[move.Name].AddRange(result_critical[move.Name] );
                 result[move.Name].Add( (long)tmp_exp );
