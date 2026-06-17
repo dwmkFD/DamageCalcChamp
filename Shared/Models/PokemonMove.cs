@@ -80,7 +80,7 @@ namespace DamageCalcChamp.Shared.Models
             AddPokemonMove("アシストパワー", "エスパー", 2, 20, 100, 10, false, false, false, 0, false, false, false, false, false, "自分のいずれかの能力ランクが1つ上がる度に威力が20上がる。");
             AddPokemonMove("アシッドボム", "どく", 2, 40, 100, 20, false, false, false, 0, false, false, false, false, false, "100%の確率で相手の『とくぼう』ランクを2段階下げる。");
             AddPokemonMove("アストラルビット", "ゴースト", 2, 120, 100, 5, false, false, false, 0, false, false, false, true, false, "相手全体が対象。通常攻撃。");
-            AddPokemonMove("あてみなげ", "かくとう", 1, 70, 0, 10, true, false, false, 0, false, false, false, false, false, "必ず後攻になるが(優先度:-1)、自分の命中率、相手の回避率に関係なく必ず命中する。");
+            AddPokemonMove("あてみなげ", "かくとう", 1, 70, 100, 10, true, false, false, 0, false, false, false, false, false, "必ず後攻になるが(優先度:-1)、自分の命中率、相手の回避率に関係なく必ず命中する。");
             AddPokemonMove("あなをほる", "じめん", 1, 80, 100, 10, true, false, false, 0, false, false, false, false, false, "1ターン目に地中に潜り、2ターン目に攻撃する。地中にいる間は『じしん』『マグニチュード』以外の技を受けない。");
             AddPokemonMove("あばれる", "ノーマル", 1, 120, 100, 10, true, false, false, 0, false, false, false, false, false, "2～3ターン連続で攻撃し、その後自分は1～4ターンの間『こんらん』状態になる。");
             AddPokemonMove("アフロブレイク", "ノーマル", 1, 120, 100, 15, true, false, false, 0, false, false, false, false, false, "相手に与えたダメージの1/4を自分も受ける。");
@@ -346,7 +346,7 @@ namespace DamageCalcChamp.Shared.Models
             AddPokemonMove("シャドークロー", "ゴースト", 1, 70, 100, 15, true, false, false, 1, false, false, false, false, false, "急所に当たりやすい(急所ランク:+1)。");
             AddPokemonMove("シャドースチール", "ゴースト", 1, 90, 100, 10, true, false, false, 0, false, false, false, false, false, "相手のすべての能力ランクの上昇分を0に元に戻して、その分だけ自分の能力ランクを上げ、その後に攻撃のダメージを与える。相手のランクの下降分には影響しない。相手の『みがわり』状態を貫通する。");
             AddPokemonMove("シャドーダイブ", "ゴースト", 1, 120, 100, 5, true, false, false, 0, false, false, false, false, false, "1ターン目に消えて、2ターン目に攻撃する。消えている間はほとんどの技を受けない。相手の『まもる』『みきり』『たたみがえし』『トーチカ』『キングシールド』『ニードルガード』『ブロッキング』『スレッドトラップ』の効果を受けない(『ダイウォール』を除く)。");
-            AddPokemonMove("シャドーパンチ", "ゴースト", 1, 60, 0, 20, true, false, true, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。特性『てつのこぶし』の時、威力が1.2倍になる。");
+            AddPokemonMove("シャドーパンチ", "ゴースト", 1, 60, 100, 20, true, false, true, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。特性『てつのこぶし』の時、威力が1.2倍になる。");
             AddPokemonMove("シャドーボール", "ゴースト", 2, 80, 100, 15, false, false, false, 0, false, false, false, false, false, "20%の確率で相手の『とくぼう』ランクを1段階下げる。");
             AddPokemonMove("シャドーレイ", "ゴースト", 2, 100, 100, 5, false, false, false, 0, false, false, false, false, false, "相手の特性の影響を受けずに攻撃する。");
             AddPokemonMove("じゃどくのくさり", "どく", 2, 100, 100, 5, false, false, false, 0, false, false, false, false, false, "50%の確率で相手を『もうどく』状態にする。『もうどく』状態は通常の『どく』状態と違い、受けるダメージが1/16、2/16、3/16・・・と増えていく。" );
@@ -385,10 +385,10 @@ namespace DamageCalcChamp.Shared.Models
             AddPokemonMove("すなかけ", "じめん", 0, 0, 100, 15, false, false, false, 0, false, false, false, false, false, "相手の命中率を1段階下げる。");
             AddPokemonMove("すなじごく", "じめん", 1, 35, 85, 15, false, false, false, 0, false, false, false, false, false, "4～5ターンの間、毎ターン終了後最大HPの1/8のダメージを与え、その間『ゴースト』タイプではない相手は逃げたり交代できない。");
             AddPokemonMove("スパーク", "でんき", 1, 65, 100, 20, true, false, false, 0, false, false, false, false, false, "30%の確率で相手を『まひ』状態にする。");
-            AddPokemonMove("スピードスター", "ノーマル", 2, 60, 0, 20, false, false, false, 0, false, false, false, true, false, "相手全体が対象。自分の命中率、相手の回避率に関係なく必ず命中する。");
+            AddPokemonMove("スピードスター", "ノーマル", 2, 60, 100, 20, false, false, false, 0, false, false, false, true, false, "相手全体が対象。自分の命中率、相手の回避率に関係なく必ず命中する。");
             AddPokemonMove("スピードスワップ", "エスパー", 0, 0, 0, 10, false, false, false, 0, false, false, false, false, false, "自分と相手の『すばやさ』を入れ替える。");
             AddPokemonMove("スプーンまげ", "エスパー", 0, 0, 80, 15, false, false, false, 0, false, false, false, false, false, "相手の命中率を1段階下げる。");
-            AddPokemonMove("スマートホーン", "はがね", 1, 70, 0, 10, true, false, false, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。");
+            AddPokemonMove("スマートホーン", "はがね", 1, 70, 100, 10, true, false, false, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。");
             AddPokemonMove("スモッグ", "どく", 2, 30, 70, 20, false, false, false, 0, false, false, false, false, false, "40%の確率で相手を『どく』状態にする。");
             AddPokemonMove("すりかえ", "あく", 0, 0, 100, 10, false, false, false, 0, false, false, false, false, false, "相手と自分が持っている道具を入れ替える。片方しか道具を持っていない場合も成功する。");
             AddPokemonMove("スレッドトラップ", "むし", 0, 0, 0, 10, false, false, false, 0, false, false, false, false, false, "必ず先制でき(優先度:+4)、そのターンの間、相手の攻撃技を受けない。また、直接攻撃をしてきた相手の『すばやさ』ランクを1段階下げる。連続で使うと失敗しやすくなる。");
@@ -433,7 +433,7 @@ namespace DamageCalcChamp.Shared.Models
             AddPokemonMove("ダブルパンツァー", "はがね", 1, 60, 100, 5, true, false, false, 0, false, false, false, false, false, "1ターンに2回連続で攻撃し、それぞれ30%の確率で相手をひるませる。");
             AddPokemonMove("タマゴうみ", "ノーマル", 0, 0, 0, 5, false, false, false, 0, false, false, false, false, false, "HPが最大HPの半分回復する。");
             AddPokemonMove("タマゴばくだん", "ノーマル", 1, 100, 75, 10, false, false, false, 0, false, false, false, false, false, "通常攻撃。");
-            AddPokemonMove("だましうち", "あく", 1, 60, 0, 20, true, false, false, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。");
+            AddPokemonMove("だましうち", "あく", 1, 60, 100, 20, true, false, false, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。");
             AddPokemonMove("たまなげ", "ノーマル", 1, 15, 85, 20, false, false, false, 0, false, false, false, false, false, "1ターンに2～5回連続で攻撃する。");
             AddPokemonMove("ダメおし", "あく", 1, 60, 100, 10, true, false, false, 0, false, false, false, false, false, "そのターン、相手が既にダメージを受けている時、威力が2倍になる。");
             AddPokemonMove("だんがいのつるぎ", "じめん", 1, 120, 85, 10, false, false, false, 0, false, false, false, true, false, "相手全体が対象。通常攻撃。");
@@ -441,7 +441,7 @@ namespace DamageCalcChamp.Shared.Models
             AddPokemonMove("ちからをすいとる", "くさ", 0, 0, 100, 10, false, false, false, 0, false, false, false, false, false, "相手の『こうげき』の能力値と同じ値だけ自分のHPを回復し、相手の『こうげき』ランクを1段階下げる。特性などでランクが下がらない場合は、回復の効果のみ発動する。すでにランクが最低の場合は失敗する。");
             AddPokemonMove("ちきゅうなげ", "かくとう", 1, 0, 100, 20, true, false, false, 0, false, false, false, false, false, "自分のレベルと同じ値の固定ダメージを与える。『ゴースト』タイプには無効だが、それ以外のタイプ相性の影響を受けない。");
             AddPokemonMove("チャージビーム", "でんき", 2, 50, 90, 10, false, false, false, 0, false, false, false, false, false, "70%の確率で自分の『とくこう』ランクが1段階上がる。");
-            AddPokemonMove("チャームボイス", "フェアリー", 2, 40, 0, 15, false, false, false, 0, false, false, true, true, false, "相手全体が対象。自分の命中率、相手の回避率に関係なく必ず命中する。音系の技。相手の『みがわり』状態を貫通する。");
+            AddPokemonMove("チャームボイス", "フェアリー", 2, 40, 100, 15, false, false, false, 0, false, false, true, true, false, "相手全体が対象。自分の命中率、相手の回避率に関係なく必ず命中する。音系の技。相手の『みがわり』状態を貫通する。");
             AddPokemonMove("ちょうおんぱ", "ノーマル", 0, 0, 55, 20, false, false, false, 0, false, false, true, false, false, "相手を1～4ターンの間『こんらん』状態にする。音系の技。相手の『みがわり』状態を貫通する。");
             AddPokemonMove("ちょうのまい", "むし", 0, 0, 0, 20, false, false, false, 0, false, false, false, false, false, "自分の『とくこう』『とくぼう』『すばやさ』ランクが1段階ずつ上がる。");
             AddPokemonMove("ちょうはつ", "あく", 0, 0, 100, 20, false, false, false, 0, false, false, false, false, false, "3ターンの間、相手は攻撃技しか出せなくなる。(変化技を使えなくする)");
@@ -456,7 +456,7 @@ namespace DamageCalcChamp.Shared.Models
             AddPokemonMove("つのでつく", "ノーマル", 1, 65, 100, 25, true, false, false, 0, false, false, false, false, false, "通常攻撃。");
             AddPokemonMove("つのドリル", "ノーマル", 1, 0, 30, 5, true, false, false, 0, false, false, false, false, false, "相手を『ひんし』状態にする。相手のレベルが自分より高いと失敗する。(30＋自分のレベル－相手のレベル)が命中率になる。『ゴースト』タイプには無効だが、それ以外のタイプ相性の影響を受けない。ダイマックスしている相手には無効。");
             AddPokemonMove("つばさでうつ", "ひこう", 1, 60, 100, 35, true, false, false, 0, false, false, false, false, false, "通常攻撃。");
-            AddPokemonMove("つばめがえし", "ひこう", 1, 60, 0, 20, true, false, false, 0, false, false, false, false, true, "自分の命中率、相手の回避率に関係なく必ず命中する。");
+            AddPokemonMove("つばめがえし", "ひこう", 1, 60, 100, 20, true, false, false, 0, false, false, false, false, true, "自分の命中率、相手の回避率に関係なく必ず命中する。");
             AddPokemonMove("つぶらなひとみ", "フェアリー", 0, 0, 100, 30, false, false, false, 0, false, false, false, false, false, "必ず先制できる(優先度:+1)。相手の『こうげき』ランクを1段階下げる。");
             AddPokemonMove("つぼをつく", "ノーマル", 0, 0, 0, 30, false, false, false, 0, false, false, false, false, false, "ランダムで『こうげき』『ぼうぎょ』『とくこう』『とくぼう』『すばやさ』『回避率』『命中率』ランクのどれか1つが2段階上がる。この技は『ダイウォール』の効果も受けない。");
             AddPokemonMove("つめとぎ", "あく", 0, 0, 0, 15, false, false, false, 0, false, false, false, false, false, "自分の『こうげき』『命中率』ランクが1段階ずつ上がる。");
@@ -480,7 +480,7 @@ namespace DamageCalcChamp.Shared.Models
             AddPokemonMove("テレポート", "エスパー", 0, 0, 0, 20, false, false, false, 0, false, false, false, false, false, "必ず後攻になる(優先度:-6)。手持ちのポケモンと入れ替わる。(第7世代までは、野生のポケモンとの戦闘を終了する効果だった)");
             AddPokemonMove("でんきショック", "でんき", 2, 40, 100, 30, false, false, false, 0, false, false, false, false, false, "10%の確率で相手を『まひ』状態にする。");
             AddPokemonMove("でんげきくちばし", "でんき", 1, 85, 100, 10, true, false, false, 0, false, false, false, false, false, "相手より先に攻撃できると技の威力が2倍になる。");
-            AddPokemonMove("でんげきは", "でんき", 2, 60, 0, 20, false, false, false, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。");
+            AddPokemonMove("でんげきは", "でんき", 2, 60, 100, 20, false, false, false, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。");
             AddPokemonMove("でんこうせっか", "ノーマル", 1, 40, 100, 30, true, false, false, 0, false, false, false, false, false, "必ず先制できる(優先度:+1)。");
             AddPokemonMove("でんこうそうげき", "でんき", 1, 120, 100, 5, true, false, false, 0, false, false, false, false, false, "攻撃後、自分は『でんき』タイプではなくなる。自分が『でんき』タイプではない時は失敗する。");
             AddPokemonMove("てんしのキッス", "フェアリー", 0, 0, 75, 10, false, false, false, 0, false, false, false, false, false, "相手を1～4ターンの間『こんらん』状態にする。");
@@ -502,8 +502,8 @@ namespace DamageCalcChamp.Shared.Models
             AddPokemonMove("どくばりセンボン", "どく", 1, 60, 100, 10, false, false, false, 0, false, false, false, false, false, "50%の確率で相手を『どく』状態にする。また、相手が『どく』状態の時、威力が2倍になる。");
             AddPokemonMove("どくびし", "どく", 0, 0, 0, 20, false, false, false, 0, false, false, false, false, false, "相手の場を『どくびし』状態にし、相手はポケモンを交代する度に、出したポケモンが『どく』状態になる。2回使うと『もうどく』状態になる。『どく』『はがね』『ひこう』タイプ、特性『ふゆう』のポケモンは効果を受けない。『どく』タイプのポケモンが出ると効果がなくなる。");
             AddPokemonMove("とぐろをまく", "どく", 0, 0, 0, 20, false, false, false, 0, false, false, false, false, false, "自分の『こうげき』『ぼうぎょ』『命中率』ランクが1段階ずつ上がる。");
-            AddPokemonMove("どげざつき", "あく", 1, 80, 0, 10, true, false, false, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する");
-            AddPokemonMove("ドゲザン", "あく", 1, 85, 0, 10, true, false, false, 0, false, false, false, false, true, "自分の命中率、相手の回避率に関係なく必ず命中する。");
+            AddPokemonMove("どげざつき", "あく", 1, 80, 100, 10, true, false, false, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する");
+            AddPokemonMove("ドゲザン", "あく", 1, 85, 100, 10, true, false, false, 0, false, false, false, false, true, "自分の命中率、相手の回避率に関係なく必ず命中する。");
             AddPokemonMove("とける", "どく", 0, 0, 0, 20, false, false, false, 0, false, false, false, false, false, "自分の『ぼうぎょ』ランクを2段階上げる。");
             AddPokemonMove("とっしん", "ノーマル", 1, 90, 85, 20, true, false, false, 0, false, false, false, false, false, "相手に与えたダメージの1/4を自分も受ける。");
             AddPokemonMove("とっておき", "ノーマル", 1, 140, 100, 5, true, false, false, 0, false, false, false, false, false, "この技は自分の持っている他の技をすべて使うと使えるようになる。");
@@ -603,7 +603,7 @@ namespace DamageCalcChamp.Shared.Models
             AddPokemonMove("はたく", "ノーマル", 1, 40, 100, 35, true, false, false, 0, false, false, false, false, false, "通常攻撃。");
             AddPokemonMove("はっけい", "かくとう", 1, 60, 100, 10, true, false, false, 0, false, false, false, false, false, "30%の確率で相手を『まひ』状態にする。");
             AddPokemonMove("はっぱカッター", "くさ", 1, 55, 95, 25, false, false, false, 1, false, false, false, true, true, "相手全体が対象。急所に当たりやすい(急所ランク:+1)。");
-            AddPokemonMove("はどうだん", "かくとう", 2, 80, 0, 20, false, false, false, 0, true, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。");
+            AddPokemonMove("はどうだん", "かくとう", 2, 80, 100, 20, false, false, false, 0, true, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。");
             AddPokemonMove("バトンタッチ", "ノーマル", 0, 0, 0, 40, false, false, false, 0, false, false, false, false, false, "他の味方のポケモンと交代し、かかっていた補助効果を引き継ぐ。");
             AddPokemonMove("はなびらのまい", "くさ", 2, 120, 100, 10, true, false, false, 0, false, false, false, false, false, "2～3ターン連続で攻撃し、その後自分は1～4ターンの間『こんらん』状態になる。");
             AddPokemonMove("はなふぶき", "くさ", 1, 90, 100, 15, false, false, false, 0, false, false, false, false, false, "自分以外全員が対象。通常攻撃。");
@@ -721,7 +721,7 @@ namespace DamageCalcChamp.Shared.Models
             AddPokemonMove("マグマストーム", "ほのお", 2, 100, 75, 5, false, false, false, 0, false, false, false, false, false, "4～5ターンの間、毎ターン終了後最大HPの1/8のダメージを与え、その間『ゴースト』タイプではない相手は逃げたり交代できない。");
             AddPokemonMove("マジカルシャイン", "フェアリー", 2, 80, 100, 10, false, false, false, 0, false, false, false, true, false, "相手全体が対象。通常攻撃。");
             AddPokemonMove("マジカルフレイム", "ほのお", 2, 75, 100, 10, false, false, false, 0, false, false, false, false, false, "100%の確率で相手の『とくこう』ランクを1段階下げる。(第6世代は威力:65)");
-            AddPokemonMove("マジカルリーフ", "くさ", 2, 60, 0, 20, false, false, false, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。");
+            AddPokemonMove("マジカルリーフ", "くさ", 2, 60, 100, 20, false, false, false, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。");
             AddPokemonMove("マジックコート", "エスパー", 0, 0, 0, 15, false, false, false, 0, false, false, false, false, false, "必ず先制でき、そのターンの間、自分が受ける変化技を使用した相手に跳ね返す。跳ね返す技の命中率は、『マジックコート』を使用したポケモンで計算される。(優先度:+4)");
             AddPokemonMove("マジックルーム", "エスパー", 0, 0, 0, 10, false, false, false, 0, false, false, false, false, false, "5ターンの間、すべてのポケモンの道具の効果がなくなる。");
             AddPokemonMove("マッドショット", "じめん", 2, 55, 95, 15, false, false, false, 0, false, false, false, false, false, "100%の確率で相手の『すばやさ』ランクを1段階下げる。");
