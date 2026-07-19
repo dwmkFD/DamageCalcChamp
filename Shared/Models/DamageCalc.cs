@@ -1239,6 +1239,16 @@ namespace DamageCalcChamp.Shared.Models
                 }
             }
 
+            if ( atk.ability == "ほのおのたてがみ" )
+            {
+                if ( move.Type == "ほのお" )
+                {
+                    A *= 6144;
+                    A += 2048;
+                    A /= 4096;
+                }
+            }
+
             return (Tuple.Create( A, D ));
         }
         private long damage_base(long a, long d, long p, long dmg, PokemonMove move) {
@@ -1820,8 +1830,8 @@ namespace DamageCalcChamp.Shared.Models
                     typecomp_res = 0.0;
                 }
 
-                // 防御側の特性がふゆうの場合、じめんタイプ無効
-                if (def.ability == "ふゆう" && move.Type == "じめん" && atk.Options[20] == false)
+                // 防御側の特性がふゆう(うなぎのぼり)の場合、じめんタイプ無効
+                if ( ( def.ability == "ふゆう" || def.ability == "うなぎのぼり" ) && move.Type == "じめん" && atk.Options[20] == false)
                 {
                     typecomp_res = 0.0;
                 }
