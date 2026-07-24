@@ -68,6 +68,18 @@ namespace DamageCalcChamp.Shared.Models
                 = TypeCompatibility["こおり"]["こおり"]
                 = TypeCompatibility["こおり"]["はがね"] = 0.5;
 
+            // フリーズドライ（弱点：みず、くさ・じめん・ひこう・ドラゴン、半減：ほのお、こおり、はがね、無効：なし）
+            // ステラと異なり扱いが面倒(みずだけが例外)なので、フリーズドライタイプで攻撃することにして処理する
+            TypeCompatibility["フリーズドライ"] = new Dictionary<string, double>();
+            TypeCompatibility["フリーズドライ"]["みず"]
+                = TypeCompatibility["フリーズドライ"]["くさ"]
+                = TypeCompatibility["フリーズドライ"]["じめん"]
+                = TypeCompatibility["フリーズドライ"]["ひこう"]
+                = TypeCompatibility["フリーズドライ"]["ドラゴン"] = 2;
+            TypeCompatibility["フリーズドライ"]["ほのお"]
+                = TypeCompatibility["フリーズドライ"]["こおり"]
+                = TypeCompatibility["フリーズドライ"]["はがね"] = 0.5;
+
             // かくとう（弱点：ノーマル・こおり・いわ・あく・はがね、半減：どく・ひこう・エスパー・むし・フェアリー、無効：ゴースト）
             TypeCompatibility["かくとう"] = new Dictionary<string, double>();
             TypeCompatibility["かくとう"]["ノーマル"]

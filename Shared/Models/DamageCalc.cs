@@ -1784,9 +1784,22 @@ namespace DamageCalcChamp.Shared.Models
                         TypeCheck_def.Add("くさ");
                     }
 
+                    // フリーズドライを「タイプをフリーズドライとして処理」にしたので、ここで対応する
+                    // 同じことをフライングプレスでもやった方が良いかもしれない -> どうせ誰も使わない技なので一旦無視
+                    // 数が増えてきたら、TypeCompatibleに専用処理入れた方が良いかも
+                    if ( move.Name == "フリーズドライ" )
+                    {
+                        move.Type = "フリーズドライ";
+                    }
+
                     foreach (var type in TypeCheck_def)
                     {
                         typecomp_res *= TypeCompatible.CompatibilityCheck(move.Type, type);
+                    }
+
+                    if ( move.Name == "フリーズドライ" )
+                    {
+                        move.Type = "こおり";
                     }
                 }
 
