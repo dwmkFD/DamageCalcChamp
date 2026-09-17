@@ -707,6 +707,14 @@ namespace DamageCalcChamp.Shared.Models
                 power /= 4096;
             }
 
+            // 特性「かたいツメ」で接触技なら威力1.3倍
+            if ( atk.ability == "かたいツメ" && move.Direct )
+            {
+                power *= 5325;
+                power += 2048;
+                power /= 4096;
+            }
+
             // オーガポンで、みどりのめん以外の場合は全ての技の威力が1.2倍
             // マジックルーム中はこの効果も失われるらしいが、現状マジックルームはまず対戦で使われないので放置しておく
             if ( atk.Name.Contains( "オーガポン" ) && atk.Name.Contains( "みどり" ) == false )
@@ -2062,12 +2070,12 @@ namespace DamageCalcChamp.Shared.Models
                     }
                 }
 
-                /* STEP11-6-4. もふもふ(接触技)補正 */
-                if ((def.ability == "もふもふ" )
-                    && (move.Direct) && atk.Options[20] == false )
+                /* STEP11-6-4. もふもふ(接触技)補正, はどうのぼうご補正 */
+                if ( ( (def.ability == "もふもふ" ) || ( def.ability == "はどうのぼうご" ) )
+                    && (move.Direct) && ( atk.Options[20] == false ) )
                 {
                     if (move.Punch && atk.Item == "パンチグローブ")
-                        ; // パンチグローブでパンチ技を使う時は非接触判定になる
+                        ; // パンチグローブでパンチ技を使う時は非接触判定になるので何もしない
                     else
                     {
                         // 接触技を受ける時はダメージ半減
