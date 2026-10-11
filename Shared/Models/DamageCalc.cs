@@ -32,6 +32,19 @@ namespace DamageCalcChamp.Shared.Models
         public static bool Gravity, WonderRoom, PlasmaShower, FairyAura, DarkAura, AuraBreak;
         public static int SelectedBattleStyle, SelectedWeatherSettings, SelectedFieldSettings;
 
+        // 攻撃側から見た天候を返す（0:なし 1:晴れ 2:雨 3:砂嵐 4:雪）
+        // 特性メガソーラーのポケモンが攻撃する時は、実際の天候に関わらず晴れとして扱う。
+        // 実際に場の天候が変わるわけではないため、防御側の特性・こだいかっせい・フラワーギフト等は SelectedWeatherSettings のまま判定すること。
+        // ※将来ノーてんき/エアロックを実装する場合も、メガソーラーはその影響を受けないので、この関数の先頭で判定を済ませておくこと。
+        private static int GetAttackWeather( PokemonDataReal atk )
+        {
+            if ( atk.ability == "メガソーラー" )
+            {
+                return 1;
+            }
+            return SelectedWeatherSettings;
+        }
+
         public PokemonMoveManager? MoveManager = null;
         private PokemonType? TypeCompatible = null;
         public DamageCalc()
@@ -446,9 +459,11 @@ namespace DamageCalcChamp.Shared.Models
             }
 
             // 無天候と晴れ以外の天候でのソーラービーム/ブレードは威力半減
+            // (メガソーラーの場合は晴れ扱いなので半減しない)
             if (move.Name == "ソーラービーム" || move.Name == "ソーラーブレード")
             {
-                if ((SelectedWeatherSettings != 0) && (SelectedWeatherSettings != 1))
+                int weather = GetAttackWeather( atk );
+                if ((weather != 0) && (weather != 1))
                 {
                     power *= 2048;
                     power /= 4096;
@@ -1039,7 +1054,7 @@ namespace DamageCalcChamp.Shared.Models
                 }
 
                 // 防御側が「こおり」タイプを持っていて雪の場合は防御を1.5倍する
-                if ( ( ( def.type.Contains( "こおり" ) && ( def.Options[14] == false ) ) || ( def.TeraType == "こおり" && def.Options[14]) ) && SelectedWeatherSettings == 4 )
+                if ( ( ( def.type.Contains( "こおり" ) && ( def.Options[14] == false ) ) || ( def.TeraType == "こおり" && def.Options[14]) ) && GetAttackWeather( atk ) == 4 )
                 {
                     D *= 6144;
                     D += 2048;
@@ -1058,7 +1073,7 @@ namespace DamageCalcChamp.Shared.Models
                     D *= def.Block;
 
                     // 防御側が「こおり」タイプを持っていて雪の場合は防御を1.5倍する
-                    if ( ( ( def.type.Contains("こおり") && ( def.Options[14] == false ) ) || (def.TeraType == "こおり" && def.Options[14]) ) && SelectedWeatherSettings == 4)
+                    if ( ( ( def.type.Contains("こおり") && ( def.Options[14] == false ) ) || (def.TeraType == "こおり" && def.Options[14]) ) && GetAttackWeather( atk ) == 4)
                     {
                         D *= 6144;
                         D += 2048;
@@ -1119,7 +1134,7 @@ namespace DamageCalcChamp.Shared.Models
                 }
 
                 // 防御側が「いわ」タイプを持っていて砂嵐の場合は特防を1.5倍する
-                if ( ( ( def.type.Contains("いわ") && ( def.Options[14] == false ) ) || (def.TeraType == "いわ" && def.Options[14]) ) && SelectedWeatherSettings == 3)
+                if ( ( ( def.type.Contains("いわ") && ( def.Options[14] == false ) ) || (def.TeraType == "いわ" && def.Options[14]) ) && GetAttackWeather( atk ) == 3)
                 {
                     D *= 6144;
                     D += 2048;
@@ -1259,7 +1274,8 @@ namespace DamageCalcChamp.Shared.Models
 
             return (Tuple.Create( A, D ));
         }
-        private long damage_base(long a, long d, long p, long dmg, PokemonMove move) {
+        // weather: 攻撃側から見た天候(GetAttackWeatherの戻り値)。メガソーラーなら実際の天候に関わらず晴れ(1)が渡される
+        private long damage_base(long a, long d, long p, long dmg, PokemonMove move, int weather) {
             dmg = dmg * (p * a) / d; dmg = (dmg / 4096) * 4096;
             dmg /= 50; dmg = (dmg / 4096) * 4096;
             dmg += 8192; dmg = (dmg / 4096) * 4096;
@@ -1277,7 +1293,7 @@ namespace DamageCalcChamp.Shared.Models
             /* STEP4. 親子愛補正は第九世代には存在しない */
 
             /* STEP5. 天気補正 */
-            if (SelectedWeatherSettings == 1)
+            if (weather == 1)
             {
                 // 晴れの時、炎技は1.5倍、水技は0.5倍
                 if (move.Type == "ほのお")
@@ -1302,7 +1318,7 @@ namespace DamageCalcChamp.Shared.Models
                     }
                 }
             }
-            else if ( SelectedWeatherSettings == 2)
+            else if ( weather == 2)
             {
                 // 雨の時、炎技は0.5倍、水技は1.5倍
                 // 晴れの時、炎技は1.5倍、水技は0.5倍
@@ -1473,6 +1489,21 @@ namespace DamageCalcChamp.Shared.Models
                     }
                 }
 
+                // ウェザーボールのタイプと威力を天候に応じて変える
+                // メガソーラーの場合は実際の天候に関わらず、晴れ扱いでほのおタイプ・威力100になる
+                // ※技データは全計算で共有されているため、天候なしの場合も含めて毎回タイプと威力を設定し直す
+                if ( move.Name == "ウェザーボール" )
+                {
+                    switch ( GetAttackWeather( atk ) )
+                    {
+                        case 1: move.Type = "ほのお"; move.Power = 100; break;
+                        case 2: move.Type = "みず"; move.Power = 100; break;
+                        case 3: move.Type = "いわ"; move.Power = 100; break;
+                        case 4: move.Type = "こおり"; move.Power = 100; break;
+                        default: move.Type = "ノーマル"; move.Power = 50; break;
+                    }
+                }
+
                 // ダメージ計算式↓
                 //  (((レベル×2/5+2)×威力×A/D)/50+2)×範囲補正×おやこあい補正×天気補正×急所補正×乱数補正×タイプ一致補正×相性補正×やけど補正×M×Mprotect
                 // A = 攻撃側の攻撃(物理) or 特攻(特殊)
@@ -1550,8 +1581,9 @@ namespace DamageCalcChamp.Shared.Models
                 long damage_critical;
                 damage *= ((atk.Level * 2) / 5); damage = (damage / 4096) * 4096; damage += 8192;
                 damage_critical = damage;
-                damage = damage_base(A, D, power, damage, move);
-                damage_critical = damage_base(A_critical, D_critical, power, damage_critical, move);
+                int attackWeather = GetAttackWeather( atk );
+                damage = damage_base(A, D, power, damage, move, attackWeather);
+                damage_critical = damage_base(A_critical, D_critical, power, damage_critical, move, attackWeather);
 
                 /* STEP6. 急所補正 */
                 damage_critical = damage_critical * (2048 + 4096) / 4096;
