@@ -482,7 +482,7 @@ namespace DamageCalcChamp.Shared.Models
             AddPokemonMove("でんげきくちばし", "でんき", 1, 85, 100, 10, true, false, false, 0, false, false, false, false, false, "相手より先に攻撃できると技の威力が2倍になる。");
             AddPokemonMove("でんげきは", "でんき", 2, 60, 100, 20, false, false, false, 0, false, false, false, false, false, "自分の命中率、相手の回避率に関係なく必ず命中する。");
             AddPokemonMove("でんこうせっか", "ノーマル", 1, 40, 100, 30, true, false, false, 0, false, false, false, false, false, "必ず先制できる(優先度:+1)。");
-            AddPokemonMove("でんこうそうげき", "でんき", 1, 120, 100, 5, true, false, false, 0, false, false, false, false, false, "攻撃後、自分は『でんき』タイプではなくなる。自分が『でんき』タイプではない時は失敗する。");
+            AddPokemonMove("でんこうそうげき", "でんき", 1, 120, 100, 5, true, false, true, 0, false, false, false, false, false, "攻撃後、自分は『でんき』タイプではなくなる。自分が『でんき』タイプではない時は失敗する。");
             AddPokemonMove("てんしのキッス", "フェアリー", 0, 0, 75, 10, false, false, false, 0, false, false, false, false, false, "相手を1～4ターンの間『こんらん』状態にする。");
             AddPokemonMove("でんじは", "でんき", 0, 0, 90, 20, false, false, false, 0, false, false, false, false, false, "相手を『まひ』状態にする。『じめん』タイプや『でんき』タイプには無効。(第6世代は命中率:100)");
             AddPokemonMove("でんじふゆう", "でんき", 0, 0, 0, 10, false, false, false, 0, false, false, false, false, false, "5ターンの間、『ふゆう』状態となり、『じめん』タイプの技や、『グラスフィールド』『ミストフィールド』『エレキフィールド』『サイコフィールド』などの効果を受けなくなる。");
